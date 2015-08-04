@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
@@ -27,53 +28,64 @@ namespace RabbitMetaQueue
 
         static int Main(string[] args)
         {
-            var options = new Options();
-
-            if (!ParseOptions(args, options))
-                return 1;
-
             try
-            { 
-                Console.WriteLine("Parsing topology definition");
-                var definedTopology = new XmlTopologyParser().Parse(options.TopologyFilename);
-
-                Console.WriteLine("Connecting to RabbitMQ server [{0}{1}]", options.ConnectionParams.Host, options.ConnectionParams.VirtualHost);
-                var client = Connect(options.ConnectionParams);
-                var virtualHost = client.GetVhost(options.ConnectionParams.VirtualHost);
-
-                Console.WriteLine("Reading existing topology");
-                var existingTopology = new RabbitMQTopologyParser().Parse(client, virtualHost);
-
-                var operations = new MulticastTopologyOperations();
-                operations.Add(new ConsoleTopologyOperations());
-
-                if (!options.DryRun)
-                { 
-                    Console.WriteLine("Changes WILL be applied");
-                    operations.Add(new RabbitMQTopologyOperations(client, virtualHost));
-                }
-                else
-                    Console.WriteLine("Dry run - changes will not be applied");
-
-                var comparator = new TopologyComparator(operations)
-                {
-                    AllowDelete = true,
-                    AllowRecreate = true,
-                    AllowUnbind = true
-                };
-                        
-                Console.WriteLine("Comparing topology");
-                comparator.Compare(existingTopology, definedTopology);
-
-                Console.WriteLine("Done!");
-                return 0;
-            }
-            catch(Exception e)
             {
-                Console.Write("Error: ");
-                Console.WriteLine(e.Message);
-                return 1;
-            }            
+                var options = new Options();
+                if (!ParseOptions(args, options))
+                    return 1;
+
+                try
+                { 
+                    Console.WriteLine("Parsing topology definition");
+                    var definedTopology = new XmlTopologyReader().Parse(options.TopologyFilename);
+
+                    Console.WriteLine("Connecting to RabbitMQ server [{0}{1}]", options.ConnectionParams.Host, options.ConnectionParams.VirtualHost);
+                    var client = Connect(options.ConnectionParams);
+                    var virtualHost = client.GetVhost(options.ConnectionParams.VirtualHost);
+
+                    Console.WriteLine("Reading existing topology");
+                    var existingTopology = new RabbitMQTopologyReader().Parse(client, virtualHost);
+
+                    var writer = new MulticastTopologyWriter();
+                    writer.Add(new ConsoleTopologyWriter());
+
+                    if (!options.DryRun)
+                    { 
+                        Console.WriteLine("Changes WILL be applied");
+                        writer.Add(new RabbitMQTopologyWriter(client, virtualHost));
+                    }
+                    else
+                        Console.WriteLine("Dry run - changes will not be applied");
+
+                    var comparator = new TopologyComparator(writer)
+                    {
+                        AllowDelete = true,
+                        AllowRecreate = true,
+                        AllowUnbind = true
+                    };
+                        
+                    Console.WriteLine("Comparing topology");
+                    comparator.Compare(existingTopology, definedTopology);
+
+                    Console.WriteLine("Done!");
+                    return 0;
+                }
+                catch(Exception e)
+                {
+                    Console.Write("Error: ");
+                    Console.WriteLine(e.Message);
+                    return 1;
+                }            
+            }
+            finally
+            {
+                if (Debugger.IsAttached)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Press any Enter key to continue...");
+                    Console.ReadLine();
+                }
+            }
         }
 
 
@@ -134,6 +146,10 @@ namespace RabbitMetaQueue
             { 
                 Console.Write("Invalid arguments: ");
                 Console.WriteLine(e.Message);
+
+                Console.WriteLine("Usage:");
+                optionSet.WriteOptionDescriptions(Console.Out);
+
                 return false;
             }
         }

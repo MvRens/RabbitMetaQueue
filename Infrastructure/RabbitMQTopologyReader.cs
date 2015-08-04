@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
@@ -6,7 +7,7 @@ using RabbitMetaQueue.Model;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class RabbitMQTopologyParser
+    class RabbitMQTopologyReader
     {
         private static readonly Dictionary<string, Model.ExchangeType> ExchangeTypeMap = new Dictionary<string, Model.ExchangeType>
         {
@@ -23,15 +24,18 @@ namespace RabbitMetaQueue.Infrastructure
             
             foreach (var exchange in client.GetExchanges())
             {
-                var modelExchange = new Model.Exchange
-                {
-                    Name = exchange.Name,
-                    ExchangeType = ExchangeTypeMap[exchange.Type],
-                    Durable = exchange.Durable,
-                };
+                if (!IsSystemExchange(exchange.Name))
+                { 
+                    var modelExchange = new Model.Exchange
+                    {
+                        Name = exchange.Name,
+                        ExchangeType = ExchangeTypeMap[exchange.Type],
+                        Durable = exchange.Durable,
+                    };
 
-                MapArguments(exchange.Arguments, modelExchange.Arguments);
-                topology.Exchanges.Add(modelExchange);
+                    MapArguments(exchange.Arguments, modelExchange.Arguments);
+                    topology.Exchanges.Add(modelExchange);
+                }
             }
 
             foreach (var queue in client.GetQueues())
@@ -70,6 +74,13 @@ namespace RabbitMetaQueue.Infrastructure
                 Key = argument.Key, 
                 Value = argument.Value
             }));
+        }
+
+
+        private bool IsSystemExchange(string name)
+        {
+            return (String.IsNullOrEmpty(name) ||
+                    name.StartsWith("amq.", StringComparison.InvariantCulture));
         }
     }
 }

@@ -6,7 +6,7 @@ using RabbitMetaQueue.Model;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class RabbitMQTopologyOperations : ITopologyOperations
+    class RabbitMQTopologyWriter : ITopologyWriter
     {
         private readonly IManagementClient client;
         private readonly Vhost virtualHost;
@@ -20,39 +20,39 @@ namespace RabbitMetaQueue.Infrastructure
         };
 
 
-        public RabbitMQTopologyOperations(IManagementClient client, Vhost virtualHost)
+        public RabbitMQTopologyWriter(IManagementClient client, Vhost virtualHost)
         {
             this.client = client;
             this.virtualHost = virtualHost;
         }
 
 
-        public void ExchangeDeclare(Model.Exchange exchange)
+        public void CreateExchange(Model.Exchange exchange)
         {
             client.CreateExchange(new ExchangeInfo(exchange.Name, ExchangeTypeMap[exchange.ExchangeType], false, exchange.Durable, false, 
                                                    MapArguments(exchange.Arguments)), virtualHost);
         }
 
 
-        public void ExchangeDelete(Model.Exchange exchange)
+        public void DeleteExchange(Model.Exchange exchange)
         {
             client.DeleteExchange(client.GetExchange(exchange.Name, virtualHost));
         }
 
 
-        public void QueueDeclare(Model.Queue queue)
+        public void CreateQueue(Model.Queue queue)
         {
             client.CreateQueue(new QueueInfo(queue.Name, false, queue.Durable, MapInputArguments(queue.Arguments)), virtualHost);
         }
 
 
-        public void QueueDelete(Model.Queue queue)
+        public void DeleteQueue(Model.Queue queue)
         {
             client.DeleteQueue(client.GetQueue(queue.Name, virtualHost));
         }
 
 
-        public void QueueBind(Model.Queue queue, Model.Binding binding)
+        public void CreateBinding(Model.Queue queue, Model.Binding binding)
         {
             client.CreateBinding(client.GetExchange(binding.Exchange, virtualHost),
                                  client.GetQueue(queue.Name, virtualHost),
@@ -60,7 +60,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        public void QueueUnbind(Model.Queue queue, Model.Binding binding)
+        public void DeleteBinding(Model.Queue queue, Model.Binding binding)
         {
             foreach (var clientBinding in client.GetBindingsForQueue(client.GetQueue(queue.Name, virtualHost)))
             {

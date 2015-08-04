@@ -5,9 +5,9 @@ using RabbitMetaQueue.Model;
 namespace RabbitMetaQueue.Infrastructure
 {
     // ToDo arguments
-    class ConsoleTopologyOperations : ITopologyOperations
+    class ConsoleTopologyWriter : ITopologyWriter
     {
-        public void ExchangeDeclare(Exchange exchange)
+        public void CreateExchange(Exchange exchange)
         {
             Console.WriteLine("> Adding exchange: " + exchange.Name);
             Console.WriteLine("    Type: " + exchange.ExchangeType);
@@ -15,26 +15,26 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        public void ExchangeDelete(Exchange exchange)
+        public void DeleteExchange(Exchange exchange)
         {
             Console.WriteLine("> Deleting exchange: " + exchange.Name);
         }
 
 
-        public void QueueDeclare(Queue queue)
+        public void CreateQueue(Queue queue)
         {
             Console.WriteLine("> Adding queue: " + queue.Name);
             Console.WriteLine("    Durable: " + queue.Durable);
         }
 
 
-        public void QueueDelete(Queue queue)
+        public void DeleteQueue(Queue queue)
         {
             Console.WriteLine("> Deleting queue: " + queue.Name);
         }
 
 
-        public void QueueBind(Queue queue, Binding binding)
+        public void CreateBinding(Queue queue, Binding binding)
         {
             Console.WriteLine("> Binding queue: " + queue.Name);
             Console.WriteLine("    Exchange: " + binding.Exchange);
@@ -42,7 +42,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        public void QueueUnbind(Queue queue, Binding binding)
+        public void DeleteBinding(Queue queue, Binding binding)
         {
             Console.WriteLine("> Unbinding queue: " + queue.Name);
             Console.WriteLine("    Exchange: " + binding.Exchange);

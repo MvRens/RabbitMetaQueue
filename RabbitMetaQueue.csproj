@@ -51,13 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\ConsoleTopologyOperations.cs" />
-    <Compile Include="Domain\ITopologyOperations.cs" />
-    <Compile Include="Infrastructure\MulticastTopologyOperations.cs" />
-    <Compile Include="Infrastructure\RabbitMQTopologyOperations.cs" />
-    <Compile Include="Infrastructure\RabbitMQTopologyParser.cs" />
+    <Compile Include="Infrastructure\ConsoleTopologyWriter.cs" />
+    <Compile Include="Domain\ITopologyWriter.cs" />
+    <Compile Include="Infrastructure\MulticastTopologyWriter.cs" />
+    <Compile Include="Infrastructure\RabbitMQTopologyWriter.cs" />
+    <Compile Include="Infrastructure\RabbitMQTopologyReader.cs" />
     <Compile Include="Domain\TopologyComparator.cs" />
-    <Compile Include="Infrastructure\XmlTopologyParser.cs" />
+    <Compile Include="Infrastructure\XmlTopologyReader.cs" />
     <Compile Include="Model\Argument.cs" />
     <Compile Include="Model\Binding.cs" />
     <Compile Include="Model\Exchange.cs" />

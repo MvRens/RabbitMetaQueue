@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class XmlTopologyParser
+    class XmlTopologyReader
     {
         public Model.Topology Parse(string filename)
         {

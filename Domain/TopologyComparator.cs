@@ -8,7 +8,7 @@ namespace RabbitMetaQueue.Domain
         public bool AllowRecreate { get; set; }
         public bool AllowUnbind { get; set; }
 
-        private ITopologyOperations topologyOperations;
+        private ITopologyWriter topologyWriter;
 
 
         public TopologyComparator()
@@ -19,9 +19,9 @@ namespace RabbitMetaQueue.Domain
         }
 
 
-        public TopologyComparator(ITopologyOperations topologyOperations)
+        public TopologyComparator(ITopologyWriter topologyWriter)
         {
-            this.topologyOperations = topologyOperations;
+            this.topologyWriter = topologyWriter;
         }
 
 
