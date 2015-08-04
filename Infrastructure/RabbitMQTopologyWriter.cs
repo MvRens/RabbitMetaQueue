@@ -2,7 +2,6 @@
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 using RabbitMetaQueue.Domain;
-using RabbitMetaQueue.Model;
 
 namespace RabbitMetaQueue.Infrastructure
 {
@@ -73,11 +72,8 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        public Arguments MapArguments(List<Argument> arguments)
+        public Arguments MapArguments(Model.Arguments arguments)
         {
-            if (arguments.Count == 0)
-                return null;
-
             var mapping = new Arguments();
             foreach (var argument in arguments)
                 mapping.Add(argument.Key, argument.Value);
@@ -86,11 +82,8 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        public InputArguments MapInputArguments(List<Argument> arguments)
+        public InputArguments MapInputArguments(Model.Arguments arguments)
         {
-            if (arguments.Count == 0)
-                return null;
-
             var mapping = new InputArguments();
             foreach (var argument in arguments)
                 mapping.Add(argument.Key, argument.Value);

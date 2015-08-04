@@ -58,7 +58,7 @@
     <Compile Include="Infrastructure\RabbitMQTopologyReader.cs" />
     <Compile Include="Domain\TopologyComparator.cs" />
     <Compile Include="Infrastructure\XmlTopologyReader.cs" />
-    <Compile Include="Model\Argument.cs" />
+    <Compile Include="Model\Arguments.cs" />
     <Compile Include="Model\Binding.cs" />
     <Compile Include="Model\Exchange.cs" />
     <Compile Include="Model\ConnectionParams.cs" />

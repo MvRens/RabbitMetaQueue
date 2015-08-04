@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace RabbitMetaQueue.Infrastructure
@@ -96,13 +95,10 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private void MapArguments(IEnumerable<Schema.Argument> definition, List<Model.Argument> model)
+        private void MapArguments(IEnumerable<Schema.Argument> definition, Model.Arguments model)
         {
-            model.AddRange(definition.Select(sourceArgument => new Model.Argument
-            {
-                Key = sourceArgument.name, 
-                Value = sourceArgument.Value
-            }));
+            foreach (var argument in definition)
+                model.Add(argument.name, argument.Value);
         }
     }
 }

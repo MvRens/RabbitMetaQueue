@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RabbitMetaQueue.Model
+﻿namespace RabbitMetaQueue.Model
 {
     public enum ExchangeType
     {
@@ -15,12 +13,12 @@ namespace RabbitMetaQueue.Model
         public string Name { get; set; }
         public ExchangeType ExchangeType { get; set; }
         public bool Durable { get; set; }
-        public List<Argument> Arguments { get; private set; }
+        public Arguments Arguments { get; private set; }
 
 
         public Exchange()
         {
-            Arguments = new List<Argument>();
+            Arguments = new Arguments();
         }
     }
 }

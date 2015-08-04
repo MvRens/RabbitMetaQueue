@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using EasyNetQ.Management.Client;
-using EasyNetQ.Management.Client.Model;
 using NDesk.Options;
 using RabbitMetaQueue.Domain;
 using RabbitMetaQueue.Infrastructure;

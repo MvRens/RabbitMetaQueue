@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 using RabbitMetaQueue.Model;
@@ -67,17 +66,14 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private void MapArguments(Arguments arguments, List<Model.Argument> modelArguments)
+        private void MapArguments(EasyNetQ.Management.Client.Model.Arguments arguments, Model.Arguments modelArguments)
         {
-            modelArguments.AddRange(arguments.Select(argument => new Argument
-            {
-                Key = argument.Key, 
-                Value = argument.Value
-            }));
+            foreach (var argument in arguments)
+                modelArguments.Add(argument.Key, argument.Value);
         }
 
 
-        private bool IsSystemExchange(string name)
+        private static bool IsSystemExchange(string name)
         {
             return (String.IsNullOrEmpty(name) ||
                     name.StartsWith("amq.", StringComparison.InvariantCulture));

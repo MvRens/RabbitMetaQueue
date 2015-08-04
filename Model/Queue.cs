@@ -6,12 +6,12 @@ namespace RabbitMetaQueue.Model
     {
         public string Name { get; set; }
         public bool Durable { get; set; }
-        public List<Argument> Arguments { get; private set; }
+        public Arguments Arguments { get; private set; }
         public List<Binding> Bindings { get; private set; }
 
         public Queue()
         {
-            Arguments = new List<Argument>();
+            Arguments = new Arguments();
             Bindings = new List<Binding>();
         }
     }
