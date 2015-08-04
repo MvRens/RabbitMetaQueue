@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:rmq="http://schema.x2software.net/RabbitMetaQueue" targetNamespace="http://schema.x2software.net/RabbitMetaQueue" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Topology">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="Exchanges" type="rmq:Exchanges" minOccurs="0"/>
+				<xs:element name="Queues" type="rmq:Queues" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Exchanges">
+		<xs:sequence>
+			<xs:element name="Exchange" type="rmq:Exchange" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Exchange">
+		<xs:all>
+			<xs:element name="Arguments" type="rmq:Arguments" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="rmq:ExchangeType" use="required"/>
+		<xs:attribute name="durable" type="xs:boolean" default="true"/>
+	</xs:complexType>
+	<xs:complexType name="Queues">
+		<xs:sequence>
+			<xs:element name="Queue" type="rmq:Queue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Queue">
+		<xs:all>
+			<xs:element name="Arguments" type="rmq:Arguments" minOccurs="0"/>
+			<xs:element name="Bindings" type="rmq:Bindings" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="durable" type="xs:boolean" default="true"/>
+	</xs:complexType>
+	<xs:complexType name="Bindings">
+		<xs:sequence>
+			<xs:element name="Binding" type="rmq:Binding" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Binding">
+		<xs:all>
+			<xs:element name="Arguments" type="rmq:Arguments" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="exchange" type="xs:string" use="required"/>
+		<xs:attribute name="routingKey" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="Arguments">
+		<xs:sequence>
+			<xs:element name="Argument" type="rmq:Argument" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Argument">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="ExchangeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fanout"/>
+			<xs:enumeration value="Direct"/>
+			<xs:enumeration value="Topic"/>
+			<xs:enumeration value="Headers"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

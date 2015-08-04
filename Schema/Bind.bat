@@ -1,0 +1,1 @@
+xsd Topology.xsd /classes /namespace:RabbitMetaQueue.Schema
