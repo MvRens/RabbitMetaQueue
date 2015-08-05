@@ -5,7 +5,7 @@ using RabbitMetaQueue.Domain;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class RabbitMQTopologyWriter : ITopologyWriter
+    public class RabbitMQTopologyWriter : ITopologyWriter
     {
         private readonly IManagementClient client;
         private readonly Vhost virtualHost;

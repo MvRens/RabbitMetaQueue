@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using RabbitMetaQueue.Model;
+using RabbitMQ.Client.Framing.Impl;
 
 namespace RabbitMetaQueue.Domain
 {
-    class TopologyComparator
+    public class TopologyComparator
     {
         public bool AllowDelete { get; set; }
         public bool AllowRecreate { get; set; }
         public bool AllowUnbind { get; set; }
 
         private readonly ITopologyWriter topologyWriter;
-        private List<string> volatileExchanges = new List<string>();
+        private readonly List<string> volatileExchanges = new List<string>();
 
 
         public TopologyComparator()
@@ -43,7 +44,9 @@ namespace RabbitMetaQueue.Domain
                     CreateExchange(exchange);
             }
 
-            // ToDo removed exchanges
+            // Removed exchanges
+            foreach (var exchange in existingTopology.Exchanges.Except(definedTopology.Exchanges, new ExchangeComparer()))
+                DeleteExchange(exchange);
 
             // Added or updated queues
             foreach (var queue in definedTopology.Queues)
@@ -55,7 +58,9 @@ namespace RabbitMetaQueue.Domain
                     CreateQueue(queue);
             }
 
-            // ToDo removed queues
+            // Removed queues
+            foreach (var queue in existingTopology.Queues.Except(definedTopology.Queues, new QueueComparer()))
+                DeleteQueue(queue);
         }
 
         private void CreateExchange(Exchange exchange)
@@ -74,6 +79,13 @@ namespace RabbitMetaQueue.Domain
                 // Bindings need to be recreated as well
                 volatileExchanges.Add(exchange.Name);
             }
+        }
+
+
+        private void DeleteExchange(Exchange exchange)
+        {
+            if (AllowDelete)
+                topologyWriter.DeleteExchange(exchange);
         }
 
 
@@ -107,6 +119,13 @@ namespace RabbitMetaQueue.Domain
 
                 // ToDo removed bindings
             }
+        }
+
+
+        private void DeleteQueue(Queue queue)
+        {
+            if (AllowDelete)
+                topologyWriter.DeleteQueue(queue);
         }
 
 
@@ -158,6 +177,34 @@ namespace RabbitMetaQueue.Domain
             string value;
             return arguments.All(a => existingArguments.TryGetValue(a.Key, out value) && 
                                       value.Equals(a.Value, StringComparison.InvariantCulture));
+        }
+    }
+
+
+    class ExchangeComparer : IEqualityComparer<Exchange>
+    {
+        public bool Equals(Exchange x, Exchange y)
+        {
+            return (String.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
+        }
+
+        public int GetHashCode(Exchange obj)
+        {
+            return obj.Name.GetHashCode();
+        }
+    }
+
+
+    class QueueComparer : IEqualityComparer<Queue>
+    {
+        public bool Equals(Queue x, Queue y)
+        {
+            return (String.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
+        }
+
+        public int GetHashCode(Queue obj)
+        {
+            return obj.Name.GetHashCode();
         }
     }
 }

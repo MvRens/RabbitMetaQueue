@@ -8,7 +8,7 @@
         Headers
     }
 
-    class Exchange
+    public class Exchange
     {
         public string Name { get; set; }
         public ExchangeType ExchangeType { get; set; }
@@ -18,6 +18,8 @@
 
         public Exchange()
         {
+            ExchangeType = ExchangeType.Direct;
+            Durable = true;
             Arguments = new Arguments();
         }
     }

@@ -6,7 +6,7 @@ using RabbitMetaQueue.Model;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class RabbitMQTopologyReader
+    public class RabbitMQTopologyReader
     {
         private static readonly Dictionary<string, Model.ExchangeType> ExchangeTypeMap = new Dictionary<string, Model.ExchangeType>
         {

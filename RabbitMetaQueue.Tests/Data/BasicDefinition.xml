@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Topology xmlns="http://schema.x2software.net/RabbitMetaQueue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.x2software.net/RabbitMetaQueue ..\Schema\Topology.xsd">
+  <Exchanges>
+    <Exchange name="RMetaQ.test1" type="Topic" />
+    <Exchange name="RMetaQ.test2" type="Topic" />
+  </Exchanges>
+
+  <Queues>
+    <Queue name="RMetaQ.queue1">
+      <Arguments>
+        <Argument name="x-dead-letter-exchange">metatest2</Argument>
+      </Arguments>
+      <Bindings>
+        <Binding exchange="RMetaQ.test1" routingKey="some.routing.key" />
+      </Bindings>
+    </Queue>
+
+    <Queue name="RMetaQ.deadletter">
+      <Bindings>
+        <Binding exchange="RMetaQ.test2" routingKey="#" />
+      </Bindings>
+    </Queue>
+  </Queues>
+</Topology>

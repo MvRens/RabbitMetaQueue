@@ -4,18 +4,21 @@ using System.Xml.Serialization;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class XmlTopologyReader
+    public class XmlTopologyReader
     {
         public Model.Topology Parse(string filename)
         {
-            Schema.Topology definition;
-
             using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
             { 
-                var serializer = new XmlSerializer(typeof(Schema.Topology));
-                definition = (Schema.Topology)serializer.Deserialize(stream);
+                return Parse(stream);
             }
-  
+          }
+
+
+        public Model.Topology Parse(Stream stream)
+        {
+            var serializer = new XmlSerializer(typeof(Schema.Topology));
+            var definition = (Schema.Topology)serializer.Deserialize(stream);
             var model = new Model.Topology();
 
             if (definition.Exchanges != null)

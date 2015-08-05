@@ -2,5 +2,5 @@
 
 namespace RabbitMetaQueue.Model
 {
-    class Arguments : Dictionary<string, string> { }
+    public class Arguments : Dictionary<string, string> { }
 }

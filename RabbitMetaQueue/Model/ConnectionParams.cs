@@ -1,6 +1,6 @@
 ﻿namespace RabbitMetaQueue.Model
 {
-    class ConnectionParams
+    public class ConnectionParams
     {
         public string Host { get; set; }
         public string VirtualHost { get; set; }

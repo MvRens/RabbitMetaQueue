@@ -2,7 +2,7 @@
 
 namespace RabbitMetaQueue.Domain
 {
-    interface ITopologyWriter
+    public interface ITopologyWriter
     {
         void CreateExchange(Exchange exchange);
         void DeleteExchange(Exchange exchange);

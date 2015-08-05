@@ -5,7 +5,7 @@ using RabbitMetaQueue.Model;
 namespace RabbitMetaQueue.Infrastructure
 {
     // ToDo arguments
-    class ConsoleTopologyWriter : ITopologyWriter
+    public class ConsoleTopologyWriter : ITopologyWriter
     {
         public void CreateExchange(Exchange exchange)
         {

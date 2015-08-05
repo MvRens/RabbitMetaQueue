@@ -4,7 +4,7 @@ using RabbitMetaQueue.Model;
 
 namespace RabbitMetaQueue.Infrastructure
 {
-    class MulticastTopologyWriter : ITopologyWriter
+    public class MulticastTopologyWriter : ITopologyWriter
     {
         private readonly List<ITopologyWriter> topologyWriters = new List<ITopologyWriter>();
 

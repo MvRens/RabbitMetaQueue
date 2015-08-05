@@ -2,7 +2,7 @@
 
 namespace RabbitMetaQueue.Model
 {
-    class Queue
+    public class Queue
     {
         public string Name { get; set; }
         public bool Durable { get; set; }
@@ -11,6 +11,7 @@ namespace RabbitMetaQueue.Model
 
         public Queue()
         {
+            Durable = true;
             Arguments = new Arguments();
             Bindings = new List<Binding>();
         }

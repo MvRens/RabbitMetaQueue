@@ -2,7 +2,7 @@
 
 namespace RabbitMetaQueue.Model
 {
-    class Topology
+    public class Topology
     {
         public List<Exchange> Exchanges { get; private set; }
         public List<Queue> Queues { get; private set; }
