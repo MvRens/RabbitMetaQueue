@@ -117,7 +117,8 @@ namespace RabbitMetaQueue.Domain
                         CreateBinding(queue, binding);
                 }
 
-                // ToDo removed bindings
+                foreach (var binding in existingQueue.Bindings.Except(queue.Bindings, new BindingComparer()))
+                    DeleteBinding(existingQueue, binding);
             }
         }
 
@@ -146,6 +147,13 @@ namespace RabbitMetaQueue.Domain
                 topologyWriter.DeleteBinding(queue, existingBinding);
                 CreateBinding(queue, binding);
             }
+        }
+
+
+        private void DeleteBinding(Queue queue, Binding binding)
+        {
+            if (AllowDelete)
+                topologyWriter.DeleteBinding(queue, binding);
         }
 
         
@@ -205,6 +213,21 @@ namespace RabbitMetaQueue.Domain
         public int GetHashCode(Queue obj)
         {
             return obj.Name.GetHashCode();
+        }
+    }
+
+
+    class BindingComparer : IEqualityComparer<Binding>
+    {
+        public bool Equals(Binding x, Binding y)
+        {
+            return (String.Compare(x.Exchange, y.Exchange, StringComparison.Ordinal) == 0) &&
+                   (String.Compare(x.RoutingKey, y.RoutingKey, StringComparison.Ordinal) == 0);
+        }
+
+        public int GetHashCode(Binding obj)
+        {
+            return (obj.Exchange + obj.RoutingKey).GetHashCode();
         }
     }
 }

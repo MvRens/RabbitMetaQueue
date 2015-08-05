@@ -64,6 +64,24 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
 
         [Test]
+        public void DeleteBinding()
+        {
+            definedTopology.AddExchange1();
+            definedTopology.AddQueue1();
+
+            existingTopology.AddExchange1();
+            existingTopology
+                .AddQueue1()
+                .BindToExchange1("mock.key");
+
+            TestCompare(new List<string>
+            {
+                { "db:q1:e1:mock.key" }
+            });
+        }
+
+
+        [Test]
         public void NothingChanged()
         {
             definedTopology.AddExchange1();
@@ -81,7 +99,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
         {
             existingTopology.AddExchange1();
 
-            TestCompare(new List<string>()
+            TestCompare(new List<string>
             {
                 { "de:e1" }
             });
@@ -93,7 +111,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
         {
             existingTopology.AddQueue1();
 
-            TestCompare(new List<string>()
+            TestCompare(new List<string>
             {
                 { "dq:q1" }
             });
