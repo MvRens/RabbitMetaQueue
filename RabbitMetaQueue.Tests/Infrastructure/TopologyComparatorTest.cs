@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RabbitMetaQueue.Domain;
+using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
 using RabbitMetaQueue.Tests.Mock;
 
@@ -120,7 +121,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
         private void TestCompare(List<string> expectedActions)
         {
             var writer = new MockTopologyWriter();
-            var comparator = new TopologyComparator(writer)
+            var comparator = new TopologyComparator(new NullLog(), writer)
             {
                 AllowDelete = true,
                 AllowRecreate = true,

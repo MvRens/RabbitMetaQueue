@@ -49,14 +49,17 @@ namespace RabbitMetaQueue.Infrastructure
 
                 foreach (var binding in client.GetBindingsForQueue(queue))
                 {
-                    var modelBinding = new Model.Binding
+                    if (!IsSystemBinding(binding))
                     {
-                        Exchange = binding.Source,
-                        RoutingKey = binding.RoutingKey
-                    };
+                        var modelBinding = new Model.Binding
+                        {
+                            Exchange = binding.Source,
+                            RoutingKey = binding.RoutingKey
+                        };
 
-                    MapArguments(binding.Arguments, modelBinding.Arguments);
-                    modelQueue.Bindings.Add(modelBinding);
+                        MapArguments(binding.Arguments, modelBinding.Arguments);
+                        modelQueue.Bindings.Add(modelBinding);
+                    }
                 }
 
                 topology.Queues.Add(modelQueue);
@@ -77,6 +80,12 @@ namespace RabbitMetaQueue.Infrastructure
         {
             return (String.IsNullOrEmpty(name) ||
                     name.StartsWith("amq.", StringComparison.InvariantCulture));
+        }
+
+
+        private static bool IsSystemBinding(EasyNetQ.Management.Client.Model.Binding binding)
+        {
+            return (String.IsNullOrEmpty(binding.Source));
         }
     }
 }

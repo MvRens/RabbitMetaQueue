@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
-using RabbitMQ.Client.Framing.Impl;
+using RabbitMetaQueue.Resources;
 
 namespace RabbitMetaQueue.Domain
 {
@@ -12,20 +13,18 @@ namespace RabbitMetaQueue.Domain
         public bool AllowRecreate { get; set; }
         public bool AllowUnbind { get; set; }
 
+        private readonly ILog log;
         private readonly ITopologyWriter topologyWriter;
         private readonly List<string> volatileExchanges = new List<string>();
 
 
-        public TopologyComparator()
+        public TopologyComparator(ILog log, ITopologyWriter topologyWriter)
         {
             AllowDelete = false;
             AllowRecreate = false;
             AllowUnbind = false;
-        }
 
-
-        public TopologyComparator(ITopologyWriter topologyWriter)
-        {
+            this.log = log;
             this.topologyWriter = topologyWriter;
         }
 
@@ -34,7 +33,7 @@ namespace RabbitMetaQueue.Domain
         {
             volatileExchanges.Clear();
 
-            // Added or updated exchanges
+            log.Debug(Strings.LogCheckAddUpdateExchanges);
             foreach (var exchange in definedTopology.Exchanges)
             {
                 var existingExchange = existingTopology.Exchanges.FirstOrDefault(e => e.Name.Equals(exchange.Name, StringComparison.InvariantCulture));
@@ -44,11 +43,16 @@ namespace RabbitMetaQueue.Domain
                     CreateExchange(exchange);
             }
 
-            // Removed exchanges
-            foreach (var exchange in existingTopology.Exchanges.Except(definedTopology.Exchanges, new ExchangeComparer()))
-                DeleteExchange(exchange);
+            if (AllowDelete)
+            { 
+                log.Debug(Strings.LogCheckRemovedExchanges);
+                foreach (var exchange in existingTopology.Exchanges.Except(definedTopology.Exchanges, new ExchangeComparer()))
+                    DeleteExchange(exchange);
+            }
+            else
+                log.Debug(Strings.LogCheckRemovedExchangesSkipped);
 
-            // Added or updated queues
+            log.Debug(Strings.LogCheckAddUpdateQueues);
             foreach (var queue in definedTopology.Queues)
             {
                 var existingQueue = existingTopology.Queues.FirstOrDefault(q => q.Name.Equals(queue.Name, StringComparison.InvariantCulture));
@@ -58,80 +62,128 @@ namespace RabbitMetaQueue.Domain
                     CreateQueue(queue);
             }
 
-            // Removed queues
-            foreach (var queue in existingTopology.Queues.Except(definedTopology.Queues, new QueueComparer()))
-                DeleteQueue(queue);
+            if (AllowDelete)
+            { 
+                log.Debug(Strings.LogCheckRemovedQueues);
+                foreach (var queue in existingTopology.Queues.Except(definedTopology.Queues, new QueueComparer()))
+                    DeleteQueue(queue);
+            }
+            else
+                log.Debug(Strings.LogCheckRemovedQueuesSkipped);
         }
 
         private void CreateExchange(Exchange exchange)
         {
+            log.InfoFormat(Strings.LogCreateExchange, exchange.Name, exchange.ExchangeType);
             topologyWriter.CreateExchange(exchange);
         }
 
 
         private void UpdateExchange(Exchange exchange, Exchange existingExchange)
         {
-            if (AllowRecreate && !SameExchange(exchange, existingExchange))
-            { 
-                topologyWriter.DeleteExchange(existingExchange);
-                topologyWriter.CreateExchange(exchange);
-
-                // Bindings need to be recreated as well
-                volatileExchanges.Add(exchange.Name);
+            if (SameExchange(exchange, existingExchange))
+            {
+                log.DebugFormat(Strings.LogExchangeUnchanged, exchange.Name);
+                return;
             }
+
+            if (!AllowRecreate)
+            {
+                log.DebugFormat(Strings.LogExchangeNoRecreate, exchange.Name);
+                return;
+            }
+
+            log.InfoFormat(Strings.LogExchangeRecreate, exchange.Name, exchange.ExchangeType);
+            topologyWriter.DeleteExchange(existingExchange);
+            topologyWriter.CreateExchange(exchange);
+
+            // Bindings need to be recreated as well
+            volatileExchanges.Add(exchange.Name);
         }
 
 
         private void DeleteExchange(Exchange exchange)
         {
-            if (AllowDelete)
-                topologyWriter.DeleteExchange(exchange);
+            log.InfoFormat(Strings.LogDeleteExchange, exchange.Name);
+            topologyWriter.DeleteExchange(exchange);
         }
 
 
         private void CreateQueue(Queue queue)
         {
+            log.InfoFormat(Strings.LogCreateQueue, queue.Name);
             topologyWriter.CreateQueue(queue);
-
-            foreach (var binding in queue.Bindings)
-                CreateBinding(queue, binding);
+            CreateQueueBindings(queue);
         }
 
 
         private void UpdateQueue(Queue queue, Queue existingQueue)
         {
-            if (AllowRecreate && !SameQueue(queue, existingQueue))
+            if (SameQueue(queue, existingQueue))
             {
-                topologyWriter.DeleteQueue(existingQueue);
-                CreateQueue(queue);
+                log.DebugFormat(Strings.LogQueueUnchanged, queue.Name);
+                UpdateQueueBindings(queue, existingQueue);
+                return;
+            }
+
+            if (AllowRecreate)
+            {
+                log.InfoFormat(Strings.LogQueueRecreate, queue.Name);
+                topologyWriter.DeleteQueue(queue);
+                topologyWriter.CreateQueue(queue);
+                CreateQueueBindings(queue);
             }
             else
             {
-                foreach (var binding in queue.Bindings)
-                {
-                    var existingBinding = existingQueue.Bindings.FirstOrDefault(b => b.Exchange.Equals(binding.Exchange, StringComparison.InvariantCulture) &&
-                                                                                     b.RoutingKey.Equals(binding.RoutingKey, StringComparison.InvariantCulture));
-                    if (existingBinding != null)
-                        UpdateBinding(queue, binding, existingBinding);
-                    else
-                        CreateBinding(queue, binding);
-                }
-
-                foreach (var binding in existingQueue.Bindings.Except(queue.Bindings, new BindingComparer()))
-                    DeleteBinding(existingQueue, binding);
+                log.DebugFormat(Strings.LogQueueNoRecreate, queue.Name);
+                UpdateQueueBindings(queue, existingQueue);
             }
         }
 
 
         private void DeleteQueue(Queue queue)
         {
+            log.InfoFormat(Strings.LogDeleteQueue, queue.Name);
+            topologyWriter.DeleteQueue(queue);
+        }
+
+
+        private void CreateQueueBindings(Queue queue)
+        {
+            foreach (var binding in queue.Bindings)
+                CreateBinding(queue, binding);            
+        }
+
+
+        private void UpdateQueueBindings(Queue queue, Queue existingQueue)
+        {
+            log.DebugFormat(Strings.LogCheckAddUpdateBindings, queue.Name);
+            foreach (var binding in queue.Bindings)
+            {
+                var existingBinding = existingQueue.Bindings.FirstOrDefault(b => b.Exchange.Equals(binding.Exchange, StringComparison.InvariantCulture) &&
+                                                                                    b.RoutingKey.Equals(binding.RoutingKey, StringComparison.InvariantCulture));
+                if (existingBinding != null)
+                    UpdateBinding(queue, binding, existingBinding);
+                else
+                    CreateBinding(queue, binding);
+            }
+
             if (AllowDelete)
-                topologyWriter.DeleteQueue(queue);
+            {
+                log.Debug(Strings.LogCheckRemovedBindings);
+                foreach (var binding in existingQueue.Bindings.Except(queue.Bindings, new BindingComparer()))
+                    DeleteBinding(existingQueue, binding);
+            }
+            else
+                log.Debug(Strings.LogCheckRemovedBindingsSkipped);
         }
 
 
         private void CreateBinding(Queue queue, Binding binding)
         {
+            log.InfoFormat(Strings.LogCreateBinding, 
+                           queue.Name, binding.Exchange, binding.RoutingKey);
+
             topologyWriter.CreateBinding(queue, binding);
         }
 
@@ -140,20 +192,39 @@ namespace RabbitMetaQueue.Domain
         {
             if (volatileExchanges.Contains(binding.Exchange, StringComparer.InvariantCulture))
             {
-                CreateBinding(queue, binding);
+                log.InfoFormat(Strings.LogBindRecreatedExchange, 
+                               queue.Name, binding.Exchange, binding.RoutingKey);
+                topologyWriter.CreateBinding(queue, binding);
+                return;
             }
-            else if (AllowRecreate && !SameBinding(binding, existingBinding))
+
+            if (SameBinding(binding, existingBinding))
             {
-                topologyWriter.DeleteBinding(queue, existingBinding);
-                CreateBinding(queue, binding);
+                log.DebugFormat(Strings.LogBindingUnchanged, 
+                                queue.Name, binding.Exchange, binding.RoutingKey);
+                return;
             }
+
+            if (!AllowRecreate)
+            {
+                log.DebugFormat(Strings.LogBindingNoRecreate, 
+                                queue.Name, binding.Exchange, binding.RoutingKey);
+                return;
+            }
+
+            log.InfoFormat(Strings.LogBindingRecreate, 
+                           queue.Name, binding.Exchange, binding.RoutingKey);
+
+            topologyWriter.DeleteBinding(queue, existingBinding);
+            CreateBinding(queue, binding);
         }
 
 
         private void DeleteBinding(Queue queue, Binding binding)
         {
-            if (AllowDelete)
-                topologyWriter.DeleteBinding(queue, binding);
+            log.InfoFormat(Strings.LogDeleteBinding, 
+                            queue.Name, binding.Exchange, binding.RoutingKey);
+            topologyWriter.DeleteBinding(queue, binding);
         }
 
         

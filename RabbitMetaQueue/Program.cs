@@ -7,6 +7,7 @@ using NDesk.Options;
 using RabbitMetaQueue.Domain;
 using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
+using RabbitMetaQueue.Resources;
 
 namespace RabbitMetaQueue
 {
@@ -16,6 +17,9 @@ namespace RabbitMetaQueue
         {
             public string TopologyFilename { get; set; }
             public bool DryRun { get; set; }
+            public bool Mirror { get; set; }
+            public bool Verbose { get; set; }
+
             public ConnectionParams ConnectionParams { get; private set; }
 
             public Options()
@@ -33,46 +37,56 @@ namespace RabbitMetaQueue
                 if (!ParseOptions(args, options))
                     return 1;
 
+                var log = new ConsoleLog
+                {
+                    IsDebugEnabled = options.Verbose
+                };
+
+                var optionTable = new TextTable();
+                optionTable.Add(Strings.OptionDryRun, options.DryRun ? Strings.OptionDryRunYes
+                                                                     : Strings.OptionDryRunNo);
+                optionTable.Add(Strings.OptionMirror, options.Mirror ? Strings.OptionYes
+                                                                     : Strings.OptionNo);
+                optionTable.Add(Strings.OptionVerbose, options.Verbose ? Strings.OptionYes
+                                                                       : Strings.OptionNo);
+
+                Console.WriteLine(Strings.Options);
+                Console.Write(optionTable.ToString());
+                Console.WriteLine();
+
                 try
                 { 
-                    Console.WriteLine("Parsing topology definition");
+                    Console.WriteLine(Strings.StatusParsingDefinition);
                     var definedTopology = new XmlTopologyReader().Parse(options.TopologyFilename);
 
-                    Console.WriteLine("Connecting to RabbitMQ server [{0}{1}]", options.ConnectionParams.Host, options.ConnectionParams.VirtualHost);
+                    Console.WriteLine(String.Format(Strings.StatusConnectingRabbitMQ, options.ConnectionParams.Host, options.ConnectionParams.VirtualHost));
                     var client = Connect(options.ConnectionParams);
                     var virtualHost = client.GetVhost(options.ConnectionParams.VirtualHost);
 
-                    Console.WriteLine("Reading existing topology");
+                    Console.WriteLine(Strings.StatusReadingTopology);
                     var existingTopology = new RabbitMQTopologyReader().Parse(client, virtualHost);
 
-                    var writer = new MulticastTopologyWriter();
-                    writer.Add(new ConsoleTopologyWriter());
+                    var writer = (options.DryRun ? (ITopologyWriter)new NullTopologyWriter() 
+                                                 : new RabbitMQTopologyWriter(client, virtualHost));
 
-                    if (!options.DryRun)
-                    { 
-                        Console.WriteLine("Changes WILL be applied");
-                        writer.Add(new RabbitMQTopologyWriter(client, virtualHost));
-                    }
-                    else
-                        Console.WriteLine("Dry run - changes will not be applied");
-
-                    var comparator = new TopologyComparator(writer)
+                    var comparator = new TopologyComparator(log, writer)
                     {
-                        AllowDelete = true,
-                        AllowRecreate = true,
-                        AllowUnbind = true
+                        AllowDelete = options.Mirror,
+                        AllowRecreate = options.Mirror,
+                        AllowUnbind = options.Mirror
                     };
                         
-                    Console.WriteLine("Comparing topology");
+                    Console.WriteLine(Strings.StatusComparing);
                     comparator.Compare(existingTopology, definedTopology);
 
-                    Console.WriteLine("Done!");
+                    Console.WriteLine();
+                    Console.WriteLine(Strings.StatusDone);
                     return 0;
                 }
                 catch(Exception e)
                 {
-                    Console.Write("Error: ");
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine();
+                    Console.WriteLine(String.Format(Strings.StatusError, e.Message));
                     return 1;
                 }            
             }
@@ -81,7 +95,7 @@ namespace RabbitMetaQueue
                 if (Debugger.IsAttached)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Press any Enter key to continue...");
+                    Console.WriteLine(Strings.StatusWaitForKey);
                     Console.ReadLine();
                 }
             }
@@ -103,28 +117,36 @@ namespace RabbitMetaQueue
             var optionSet = new OptionSet
             {
                 {
-                    "i|input=", "The {file name} of the topology definition. Required.",
+                    Strings.OptionKeyInput, Strings.OptionDescriptionInput,
                     v => filename = v
                 },
                 {
-                    "h|host=", "The host {name} of the RabbitMQ server. Defaults to localhost.", 
+                    Strings.OptionKeyHost, Strings.OptionDescriptionHost,
                     v => options.ConnectionParams.Host = v
                 },
                 {
-                    "v|virtualhost=", "The virtual host {name} as configured in RabbitMQ. Defaults to /.",
+                    Strings.OptionKeyVirtualHost, Strings.OptionDescriptionVirtualHost,
                     v => options.ConnectionParams.VirtualHost = v
                 },
                 {
-                    "u|username=", "The {username} used in the connection. Defaults to guest.",
+                    Strings.OptionKeyUsername, Strings.OptionDescriptionUsername,
                     v => options.ConnectionParams.Username = v
                 },
                 {
-                    "p|password=", "The {password} used in the connection. Defaults to guest.",
+                    Strings.OptionKeyPassword, Strings.OptionDescriptionPassword,
                     v => options.ConnectionParams.Password = v
                 },
                 {
-                    "d|dryrun", "When specified, changes are not applied to the RabbitMQ server.",
+                    Strings.OptionKeyDryRun, Strings.OptionDescriptionDryRun,
                     v => options.DryRun = (v != null)
+                },
+                {
+                    Strings.OptionKeyMirror, Strings.OptionDescriptionMirror,
+                    v => options.Mirror = (v != null)
+                },
+                {
+                    Strings.OptionKeyVerbose, Strings.OptionDescriptionVerbose,
+                    v => options.Verbose = (v != null)
                 }
             };            
 
@@ -133,20 +155,20 @@ namespace RabbitMetaQueue
                 optionSet.Parse(args);
 
                 if (String.IsNullOrEmpty(filename))
-                    throw new OptionException("Topology file name is required", "i");
+                    throw new OptionException(Strings.OptionInputRequired, Strings.OptionKeyInput);
 
                 if (!File.Exists(filename))
-                    throw new OptionException("Topology file not found", "i");
+                    throw new OptionException(Strings.OptionInputNotFound, Strings.OptionKeyInput);
 
                 options.TopologyFilename = filename;
                 return true;
             }
             catch(OptionException e)
             { 
-                Console.Write("Invalid arguments: ");
+                Console.Write(Strings.OptionInvalidArguments);
                 Console.WriteLine(e.Message);
 
-                Console.WriteLine("Usage:");
+                Console.WriteLine(Strings.OptionUsage);
                 optionSet.WriteOptionDescriptions(Console.Out);
 
                 return false;

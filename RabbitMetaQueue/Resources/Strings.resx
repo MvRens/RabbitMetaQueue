@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OptionDryRun" xml:space="preserve">
+    <value>Dry run:</value>
+  </data>
+  <data name="OptionDryRunNo" xml:space="preserve">
+    <value>no, changes WILL be applied</value>
+  </data>
+  <data name="OptionDryRunYes" xml:space="preserve">
+    <value>yes, changes will NOT be applied</value>
+  </data>
+  <data name="OptionMirror" xml:space="preserve">
+    <value>Mirror mode:</value>
+  </data>
+  <data name="OptionNo" xml:space="preserve">
+    <value>no</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options:</value>
+  </data>
+  <data name="OptionVerbose" xml:space="preserve">
+    <value>Verbose:</value>
+  </data>
+  <data name="OptionYes" xml:space="preserve">
+    <value>yes</value>
+  </data>
+  <data name="StatusComparing" xml:space="preserve">
+    <value>Comparing topology</value>
+  </data>
+  <data name="StatusConnectingRabbitMQ" xml:space="preserve">
+    <value>Connecting to RabbitMQ server [{0}{1}]</value>
+    <comment>0 = Host, 1 = VirtualHost</comment>
+  </data>
+  <data name="StatusDone" xml:space="preserve">
+    <value>Done!</value>
+  </data>
+  <data name="StatusError" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="StatusParsingDefinition" xml:space="preserve">
+    <value>Parsing topology definition</value>
+  </data>
+  <data name="StatusReadingTopology" xml:space="preserve">
+    <value>Reading existing topology</value>
+  </data>
+  <data name="StatusWaitForKey" xml:space="preserve">
+    <value>Press any Enter key to continue...</value>
+  </data>
+  <data name="LogError" xml:space="preserve">
+    <value>Error: </value>
+  </data>
+  <data name="LogFatal" xml:space="preserve">
+    <value>Fatal: </value>
+  </data>
+  <data name="LogWarning" xml:space="preserve">
+    <value>Warning: </value>
+  </data>
+  <data name="LogPrefix" xml:space="preserve">
+    <value>&gt; </value>
+  </data>
+  <data name="OptionInvalidArguments" xml:space="preserve">
+    <value>Invalid arguments: </value>
+  </data>
+  <data name="OptionUsage" xml:space="preserve">
+    <value>Usage:</value>
+  </data>
+  <data name="OptionDescriptionDryRun" xml:space="preserve">
+    <value>When specified, changes are not applied to the RabbitMQ server.</value>
+  </data>
+  <data name="OptionDescriptionHost" xml:space="preserve">
+    <value>The host {name} of the RabbitMQ server. Defaults to localhost.</value>
+  </data>
+  <data name="OptionDescriptionInput" xml:space="preserve">
+    <value>The {file name} of the topology definition. Required.</value>
+  </data>
+  <data name="OptionDescriptionMirror" xml:space="preserve">
+    <value>When specified, anything not present in the topology definition will be deleted from the server (excluding system entries)</value>
+  </data>
+  <data name="OptionDescriptionPassword" xml:space="preserve">
+    <value>The {password} used in the connection. Defaults to guest.</value>
+  </data>
+  <data name="OptionDescriptionUsername" xml:space="preserve">
+    <value>The {username} used in the connection. Defaults to guest.</value>
+  </data>
+  <data name="OptionDescriptionVerbose" xml:space="preserve">
+    <value>Include intermediate steps and skipped items in the output.</value>
+  </data>
+  <data name="OptionDescriptionVirtualHost" xml:space="preserve">
+    <value>The virtual host {name} as configured in RabbitMQ. Defaults to /.</value>
+  </data>
+  <data name="OptionInputNotFound" xml:space="preserve">
+    <value>Topology file not found</value>
+  </data>
+  <data name="OptionInputRequired" xml:space="preserve">
+    <value>Topology file name is required</value>
+  </data>
+  <data name="OptionKeyDryRun" xml:space="preserve">
+    <value>d|dryrun</value>
+  </data>
+  <data name="OptionKeyHost" xml:space="preserve">
+    <value>h|host=</value>
+  </data>
+  <data name="OptionKeyInput" xml:space="preserve">
+    <value>i|input=</value>
+  </data>
+  <data name="OptionKeyMirror" xml:space="preserve">
+    <value>m|mirror</value>
+  </data>
+  <data name="OptionKeyPassword" xml:space="preserve">
+    <value>p|password=</value>
+  </data>
+  <data name="OptionKeyUsername" xml:space="preserve">
+    <value>u|username=</value>
+  </data>
+  <data name="OptionKeyVerbose" xml:space="preserve">
+    <value>vb|verbose</value>
+  </data>
+  <data name="OptionKeyVirtualHost" xml:space="preserve">
+    <value>v|virtualhost=</value>
+  </data>
+  <data name="LogBindingNoRecreate" xml:space="preserve">
+    <value>Binding from queue {0} to exchange {1} with routing key {2} has changed but recreating is not enabled, skipping</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogBindingRecreate" xml:space="preserve">
+    <value>Recreating binding from queue {0} to exchange {1} with routing key {2}</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogBindingUnchanged" xml:space="preserve">
+    <value>Binding from queue {0} to exchange {1} with routing key {2} has not been changed, skipping</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogBindRecreatedExchange" xml:space="preserve">
+    <value>Exchange {1} was recreated, creating binding for queue {0} with routing key {2}</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogCheckAddUpdateBindings" xml:space="preserve">
+    <value>Checking queue {0} for added or updated bindings</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogCheckAddUpdateExchanges" xml:space="preserve">
+    <value>Checking for added or updated exchanges</value>
+  </data>
+  <data name="LogCheckAddUpdateQueues" xml:space="preserve">
+    <value>Checking for added or updated queues</value>
+  </data>
+  <data name="LogCheckRemovedBindings" xml:space="preserve">
+    <value>Checking for removed bindings</value>
+  </data>
+  <data name="LogCheckRemovedBindingsSkipped" xml:space="preserve">
+    <value>Deleting is not enabled, skipping check for removed bindings</value>
+  </data>
+  <data name="LogCheckRemovedExchanges" xml:space="preserve">
+    <value>Checking for removed exchanges</value>
+  </data>
+  <data name="LogCheckRemovedExchangesSkipped" xml:space="preserve">
+    <value>Deleting is not enabled, skipping check for removed exchanges</value>
+  </data>
+  <data name="LogCheckRemovedQueues" xml:space="preserve">
+    <value>Checking for removed queues</value>
+  </data>
+  <data name="LogCheckRemovedQueuesSkipped" xml:space="preserve">
+    <value>Deleting is not enabled, skipping check for removed queues</value>
+  </data>
+  <data name="LogCreateBinding" xml:space="preserve">
+    <value>Creating binding for queue {0} to exchange {1} with routing key {2}</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogCreateExchange" xml:space="preserve">
+    <value>Creating exchange {0} of type {1}</value>
+    <comment>0 = Name, 1 = Type</comment>
+  </data>
+  <data name="LogCreateQueue" xml:space="preserve">
+    <value>Creating queue {0}</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogDeleteBinding" xml:space="preserve">
+    <value>Deleting binding from queue {0} to exchange {1} with routing key {2}</value>
+    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+  </data>
+  <data name="LogDeleteExchange" xml:space="preserve">
+    <value>Deleting exchange {0}</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogDeleteQueue" xml:space="preserve">
+    <value>Deleting queue {0}</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogExchangeNoRecreate" xml:space="preserve">
+    <value>Exchange {0} has changed but recreating is not enabled, skipping</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogExchangeRecreate" xml:space="preserve">
+    <value>Recreating exchange {0} (type: {1})</value>
+    <comment>0 = Name, 1 = Type</comment>
+  </data>
+  <data name="LogExchangeUnchanged" xml:space="preserve">
+    <value>Exchange {0} has not been changed, skipping</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogQueueNoRecreate" xml:space="preserve">
+    <value>Queue {0} has changed but recreating is not enabled, checking for updated bindings</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogQueueRecreate" xml:space="preserve">
+    <value>Recreating queue {0}</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="LogQueueUnchanged" xml:space="preserve">
+    <value>Queue {0} has not been changed, checking for updated bindings</value>
+    <comment>0 = Name</comment>
+  </data>
+</root>
