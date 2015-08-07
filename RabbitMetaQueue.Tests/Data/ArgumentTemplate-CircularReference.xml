@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Topology xmlns="http://schema.x2software.net/RabbitMetaQueue">
+  <Templates>
+    <Template name="default-deadletter" type="Arguments">
+      <Arguments template="loop">
+        <Argument name="x-dead-letter-exchange">argh</Argument>
+      </Arguments>
+    </Template>
+    <Template name="loop" type="Arguments">
+      <Arguments template="default-deadletter" />
+    </Template>
+  </Templates>
+
+  <Queues>
+    <Queue name="queue1">
+      <Arguments template="loop" />
+    </Queue>
+
+    <Queue name="queue2">
+      <Arguments template="default-deadletter">
+        <Argument name="x-extend-template">test</Argument>
+      </Arguments>
+    </Queue>
+  </Queues>
+</Topology>

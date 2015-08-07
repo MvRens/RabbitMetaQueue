@@ -635,5 +635,41 @@ namespace RabbitMetaQueue.Resources {
                 return ResourceManager.GetString("StatusWaitForKey", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No &lt;Templates&gt; element found.
+        /// </summary>
+        internal static string XmlNoTemplatesElement {
+            get {
+                return ResourceManager.GetString("XmlNoTemplatesElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circular reference detected for template {0}.
+        /// </summary>
+        internal static string XmlTemplateCircularReference {
+            get {
+                return ResourceManager.GetString("XmlTemplateCircularReference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template {0} not found.
+        /// </summary>
+        internal static string XmlTemplateNotFound {
+            get {
+                return ResourceManager.GetString("XmlTemplateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template {0} is not of the expected type.
+        /// </summary>
+        internal static string XmlTemplateUnexpectedType {
+            get {
+                return ResourceManager.GetString("XmlTemplateUnexpectedType", resourceCulture);
+            }
+        }
     }
 }

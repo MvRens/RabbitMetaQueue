@@ -59,9 +59,17 @@
       <Name>RabbitMetaQueue</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Data\ArgumentTemplate.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\BasicDefinition.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\ArgumentTemplate-InvalidName.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\ArgumentTemplate-CircularReference.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

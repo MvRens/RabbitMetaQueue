@@ -27,6 +27,42 @@ namespace RabbitMetaQueue.Tests.Infrastructure
         }
 
 
+        [Test]
+        public void ArgumentTemplate()
+        {
+            var topology = Parse("ArgumentTemplate.xml");
+            Assert.AreEqual(2, topology.Queues.Count, "Queue count");
+            TestQueue(topology.Queues[0], "queue1");
+            TestQueue(topology.Queues[1], "queue2");
+
+            var arguments = topology.Queues[0].Arguments;
+            Assert.AreEqual(1, arguments.Count, "Queue1 Argument Count");
+            Assert.IsTrue(arguments.ContainsKey("x-dead-letter-exchange"), "Dead Letter Exchange argument");
+            Assert.AreEqual("argh", arguments["x-dead-letter-exchange"], "Dead Letter Exchange value");
+
+            arguments = topology.Queues[1].Arguments;
+            Assert.AreEqual(2, arguments.Count, "Queue2 Argument Count");
+            Assert.IsTrue(arguments.ContainsKey("x-dead-letter-exchange"), "Dead Letter Exchange argument");
+            Assert.AreEqual("argh", arguments["x-dead-letter-exchange"], "Dead Letter Exchange value");
+            Assert.IsTrue(arguments.ContainsKey("x-extend-template"), "Extra argument");
+            Assert.AreEqual("test", arguments["x-extend-template"], "Extra value");
+        }
+
+
+        [Test]
+        public void ArgumentTemplateInvalidName()
+        {
+            Assert.Catch(typeof(XmlTopologyReader.TemplateException), () => Parse("ArgumentTemplate-InvalidName.xml"));
+        }
+
+
+        [Test]
+        public void ArgumentTemplateCircularReference()
+        {
+            Assert.Catch(typeof(XmlTopologyReader.TemplateException), () => Parse("ArgumentTemplate-CircularReference.xml"));
+        }
+
+
         private static void TestExchange(Exchange exchange, string expectedName, ExchangeType expectedType, bool expectedDurable = true)
         {
             Assert.AreEqual(expectedName, exchange.Name, "Exchange Name");

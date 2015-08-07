@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Topology xmlns="http://schema.x2software.net/RabbitMetaQueue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.x2software.net/RabbitMetaQueue ..\Schema\Topology.xsd">
+<Topology xmlns="http://schema.x2software.net/RabbitMetaQueue">
   <Exchanges>
     <Exchange name="RMetaQ.test1" type="Topic" />
     <Exchange name="RMetaQ.test2" type="Topic" />

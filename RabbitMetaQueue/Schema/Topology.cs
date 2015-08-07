@@ -24,9 +24,22 @@ namespace RabbitMetaQueue.Schema {
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue", IsNullable=false)]
     public partial class Topology {
         
+        private Template[] templatesField;
+        
         private Exchange[] exchangesField;
         
         private Queue[] queuesField;
+        
+        /// <opmerkingen/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Template[] Templates {
+            get {
+                return this.templatesField;
+            }
+            set {
+                this.templatesField = value;
+            }
+        }
         
         /// <opmerkingen/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
@@ -57,28 +70,22 @@ namespace RabbitMetaQueue.Schema {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
-    public partial class Exchange {
+    public partial class Template {
         
-        private Argument[] argumentsField;
+        private Arguments itemField;
         
         private string nameField;
         
-        private ExchangeType typeField;
-        
-        private bool durableField;
-        
-        public Exchange() {
-            this.durableField = true;
-        }
+        private TemplateType typeField;
         
         /// <opmerkingen/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public Argument[] Arguments {
+        [System.Xml.Serialization.XmlElementAttribute("Arguments")]
+        public Arguments Item {
             get {
-                return this.argumentsField;
+                return this.itemField;
             }
             set {
-                this.argumentsField = value;
+                this.itemField = value;
             }
         }
         
@@ -95,7 +102,7 @@ namespace RabbitMetaQueue.Schema {
         
         /// <opmerkingen/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ExchangeType type {
+        public TemplateType type {
             get {
                 return this.typeField;
             }
@@ -103,16 +110,39 @@ namespace RabbitMetaQueue.Schema {
                 this.typeField = value;
             }
         }
+    }
+    
+    /// <opmerkingen/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.42")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
+    public partial class Arguments {
+        
+        private Argument[] argumentField;
+        
+        private string templateField;
+        
+        /// <opmerkingen/>
+        [System.Xml.Serialization.XmlElementAttribute("Argument")]
+        public Argument[] Argument {
+            get {
+                return this.argumentField;
+            }
+            set {
+                this.argumentField = value;
+            }
+        }
         
         /// <opmerkingen/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(true)]
-        public bool durable {
+        public string template {
             get {
-                return this.durableField;
+                return this.templateField;
             }
             set {
-                this.durableField = value;
+                this.templateField = value;
             }
         }
     }
@@ -160,15 +190,14 @@ namespace RabbitMetaQueue.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
     public partial class Binding {
         
-        private Argument[] argumentsField;
+        private Arguments argumentsField;
         
         private string exchangeField;
         
         private string routingKeyField;
         
         /// <opmerkingen/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public Argument[] Arguments {
+        public Arguments Arguments {
             get {
                 return this.argumentsField;
             }
@@ -208,7 +237,7 @@ namespace RabbitMetaQueue.Schema {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
     public partial class Queue {
         
-        private Argument[] argumentsField;
+        private Arguments argumentsField;
         
         private Binding[] bindingsField;
         
@@ -221,8 +250,7 @@ namespace RabbitMetaQueue.Schema {
         }
         
         /// <opmerkingen/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public Argument[] Arguments {
+        public Arguments Arguments {
             get {
                 return this.argumentsField;
             }
@@ -269,6 +297,71 @@ namespace RabbitMetaQueue.Schema {
     /// <opmerkingen/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.42")]
     [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
+    public partial class Exchange {
+        
+        private Arguments argumentsField;
+        
+        private string nameField;
+        
+        private ExchangeType typeField;
+        
+        private bool durableField;
+        
+        public Exchange() {
+            this.durableField = true;
+        }
+        
+        /// <opmerkingen/>
+        public Arguments Arguments {
+            get {
+                return this.argumentsField;
+            }
+            set {
+                this.argumentsField = value;
+            }
+        }
+        
+        /// <opmerkingen/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <opmerkingen/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ExchangeType type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+            }
+        }
+        
+        /// <opmerkingen/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool durable {
+            get {
+                return this.durableField;
+            }
+            set {
+                this.durableField = value;
+            }
+        }
+    }
+    
+    /// <opmerkingen/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.42")]
+    [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
     public enum ExchangeType {
         
@@ -283,5 +376,15 @@ namespace RabbitMetaQueue.Schema {
         
         /// <opmerkingen/>
         Headers,
+    }
+    
+    /// <opmerkingen/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.42")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schema.x2software.net/RabbitMetaQueue")]
+    public enum TemplateType {
+        
+        /// <opmerkingen/>
+        Arguments,
     }
 }

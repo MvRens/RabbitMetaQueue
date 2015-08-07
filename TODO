@@ -1,8 +1,10 @@
 Disclaimer: this is a list of ideas, not a roadmap.
 
-* Templates in the definition for arguments, for example
+X Templates in the definition for arguments, for example
   a "deadletter" template which can be referenced in each
   of the queues.
+  
+  Done!
   
 * Specify prefix to determine scope of the exchanges / queues
 	Relevant when using the delete options to mirror the definition,

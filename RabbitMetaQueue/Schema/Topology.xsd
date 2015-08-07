@@ -3,6 +3,7 @@
 	<xs:element name="Topology">
 		<xs:complexType>
 			<xs:all>
+				<xs:element name="Templates" type="rmq:Templates" minOccurs="0"/>
 				<xs:element name="Exchanges" type="rmq:Exchanges" minOccurs="0"/>
 				<xs:element name="Queues" type="rmq:Queues" minOccurs="0"/>
 			</xs:all>
@@ -50,6 +51,7 @@
 		<xs:sequence>
 			<xs:element name="Argument" type="rmq:Argument" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
+		<xs:attribute name="template" type="xs:string"/>
 	</xs:complexType>
 	<xs:complexType name="Argument">
 		<xs:simpleContent>
@@ -58,12 +60,29 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
+	<xs:complexType name="Templates">
+		<xs:sequence>
+			<xs:element name="Template" type="rmq:Template" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Template">
+		<xs:choice>
+			<xs:element name="Arguments" type="rmq:Arguments"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="rmq:TemplateType" use="required"/>
+	</xs:complexType>
 	<xs:simpleType name="ExchangeType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Fanout"/>
 			<xs:enumeration value="Direct"/>
 			<xs:enumeration value="Topic"/>
 			<xs:enumeration value="Headers"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TemplateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Arguments"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

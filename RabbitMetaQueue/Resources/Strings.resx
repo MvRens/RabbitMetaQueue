@@ -327,4 +327,19 @@
     <value>Queue {0} has not been changed, checking for updated bindings</value>
     <comment>0 = Name</comment>
   </data>
+  <data name="XmlNoTemplatesElement" xml:space="preserve">
+    <value>No &lt;Templates&gt; element found</value>
+  </data>
+  <data name="XmlTemplateNotFound" xml:space="preserve">
+    <value>Template {0} not found</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="XmlTemplateUnexpectedType" xml:space="preserve">
+    <value>Template {0} is not of the expected type</value>
+    <comment>0 = Name</comment>
+  </data>
+  <data name="XmlTemplateCircularReference" xml:space="preserve">
+    <value>Circular reference detected for template {0}</value>
+    <comment>0 = Name</comment>
+  </data>
 </root>
