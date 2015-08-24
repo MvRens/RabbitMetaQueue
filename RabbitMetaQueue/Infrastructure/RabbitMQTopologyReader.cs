@@ -39,30 +39,33 @@ namespace RabbitMetaQueue.Infrastructure
 
             foreach (var queue in client.GetQueues())
             {
-                var modelQueue = new Model.Queue
-                {
-                    Name = queue.Name,
-                    Durable = queue.Durable
-                };
-
-                MapArguments(queue.Arguments, modelQueue.Arguments);
-
-                foreach (var binding in client.GetBindingsForQueue(queue))
-                {
-                    if (!IsSystemBinding(binding))
+                if (!IsSystemQueue(queue))
+                { 
+                    var modelQueue = new Model.Queue
                     {
-                        var modelBinding = new Model.Binding
+                        Name = queue.Name,
+                        Durable = queue.Durable
+                    };
+
+                    MapArguments(queue.Arguments, modelQueue.Arguments);
+
+                    foreach (var binding in client.GetBindingsForQueue(queue))
+                    {
+                        if (!IsSystemBinding(binding))
                         {
-                            Exchange = binding.Source,
-                            RoutingKey = binding.RoutingKey
-                        };
+                            var modelBinding = new Model.Binding
+                            {
+                                Exchange = binding.Source,
+                                RoutingKey = binding.RoutingKey
+                            };
 
-                        MapArguments(binding.Arguments, modelBinding.Arguments);
-                        modelQueue.Bindings.Add(modelBinding);
+                            MapArguments(binding.Arguments, modelBinding.Arguments);
+                            modelQueue.Bindings.Add(modelBinding);
+                        }
                     }
-                }
 
-                topology.Queues.Add(modelQueue);
+                    topology.Queues.Add(modelQueue);
+                }
             }
 
             return topology;
@@ -80,6 +83,14 @@ namespace RabbitMetaQueue.Infrastructure
         {
             return (String.IsNullOrEmpty(name) ||
                     name.StartsWith("amq.", StringComparison.InvariantCulture));
+        }
+
+
+        private static bool IsSystemQueue(EasyNetQ.Management.Client.Model.Queue queue)
+        {
+            return (queue.AutoDelete || 
+                    String.IsNullOrEmpty(queue.Name) ||
+                    queue.Name.StartsWith("amq."));
         }
 
 
