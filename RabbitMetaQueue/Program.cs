@@ -38,8 +38,10 @@ namespace RabbitMetaQueue
                 if (!ParseOptions(args, options))
                     return 1;
 
+                //TODO stop mixing Console.Write and logger
+                // Context: Console.Write is used for pretty output, ILogger for the internal stuff.
                 var logger = new LoggerConfiguration()
-                    .WriteTo.Console()
+                    .WriteTo.Console(outputTemplate: "> {Level}: {Message}{NewLine}{Exception}")
                     .CreateLogger();
 
                 var optionTable = new TextTable();
@@ -59,12 +61,16 @@ namespace RabbitMetaQueue
                     Console.WriteLine(Strings.StatusParsingDefinition);
                     var definedTopology = new XmlTopologyReader().Parse(options.TopologyFilename);
 
+                    if (!definedTopology.VerifyNamespaces(logger, definedTopology.Meta.NamespacePrefix))
+                        return 1;
+
                     Console.WriteLine(Strings.StatusConnectingRabbitMQ, options.ConnectionParams.Host, options.ConnectionParams.VirtualHost);
                     var client = Connect(options.ConnectionParams);
                     var virtualHost = client.GetVhost(options.ConnectionParams.VirtualHost);
 
                     Console.WriteLine(Strings.StatusReadingTopology);
-                    var existingTopology = new RabbitMQTopologyReader().Parse(client, virtualHost);
+                    var existingTopology = new RabbitMQTopologyReader().Parse(client, virtualHost)
+                        .FilterByNamespace(definedTopology.Meta.NamespacePrefix);
 
                     var writer = (options.DryRun ? (ITopologyWriter)new NullTopologyWriter() 
                                                  : new RabbitMQTopologyWriter(client, virtualHost));

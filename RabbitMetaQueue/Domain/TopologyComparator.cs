@@ -74,7 +74,7 @@ namespace RabbitMetaQueue.Domain
 
         private void CreateExchange(Exchange exchange)
         {
-            logger.Information(Strings.LogCreateExchange, new { exchange = exchange.Name, type = exchange.ExchangeType });
+            logger.Information(Strings.LogCreateExchange, exchange.Name, exchange.ExchangeType);
             topologyWriter.CreateExchange(exchange);
         }
 
@@ -83,17 +83,17 @@ namespace RabbitMetaQueue.Domain
         {
             if (SameExchange(exchange, existingExchange))
             {
-                logger.Debug(Strings.LogExchangeUnchanged, new { exchange = exchange.Name });
+                logger.Debug(Strings.LogExchangeUnchanged, exchange.Name);
                 return;
             }
 
             if (!AllowRecreate)
             {
-                logger.Debug(Strings.LogExchangeNoRecreate, new { exchange = exchange.Name });
+                logger.Debug(Strings.LogExchangeNoRecreate, exchange.Name);
                 return;
             }
 
-            logger.Information(Strings.LogExchangeRecreate, new { exchange = exchange.Name, type = exchange.ExchangeType });
+            logger.Information(Strings.LogExchangeRecreate, exchange.Name, exchange.ExchangeType);
             topologyWriter.DeleteExchange(existingExchange);
             topologyWriter.CreateExchange(exchange);
 
@@ -104,14 +104,14 @@ namespace RabbitMetaQueue.Domain
 
         private void DeleteExchange(Exchange exchange)
         {
-            logger.Information(Strings.LogDeleteExchange, new { exchange = exchange.Name });
+            logger.Information(Strings.LogDeleteExchange, exchange.Name);
             topologyWriter.DeleteExchange(exchange);
         }
 
 
         private void CreateQueue(Queue queue)
         {
-            logger.Information(Strings.LogCreateQueue, new { queue = queue.Name });
+            logger.Information(Strings.LogCreateQueue, queue.Name);
             topologyWriter.CreateQueue(queue);
             CreateQueueBindings(queue);
         }
@@ -121,21 +121,21 @@ namespace RabbitMetaQueue.Domain
         {
             if (SameQueue(queue, existingQueue))
             {
-                logger.Debug(Strings.LogQueueUnchanged, new { queue = queue.Name });
+                logger.Debug(Strings.LogQueueUnchanged, queue.Name);
                 UpdateQueueBindings(queue, existingQueue);
                 return;
             }
 
             if (AllowRecreate)
             {
-                logger.Information(Strings.LogQueueRecreate, new { queue = queue.Name });
+                logger.Information(Strings.LogQueueRecreate, queue.Name);
                 topologyWriter.DeleteQueue(queue);
                 topologyWriter.CreateQueue(queue);
                 CreateQueueBindings(queue);
             }
             else
             {
-                logger.Debug(Strings.LogQueueNoRecreate, new { queue = queue.Name });
+                logger.Debug(Strings.LogQueueNoRecreate, queue.Name);
                 UpdateQueueBindings(queue, existingQueue);
             }
         }
@@ -143,7 +143,7 @@ namespace RabbitMetaQueue.Domain
 
         private void DeleteQueue(Queue queue)
         {
-            logger.Information(Strings.LogDeleteQueue, new { queue = queue.Name });
+            logger.Information(Strings.LogDeleteQueue, queue.Name);
             topologyWriter.DeleteQueue(queue);
         }
 
@@ -157,7 +157,7 @@ namespace RabbitMetaQueue.Domain
 
         private void UpdateQueueBindings(Queue queue, Queue existingQueue)
         {
-            logger.Debug(Strings.LogCheckAddUpdateBindings, new { queue = queue.Name });
+            logger.Debug(Strings.LogCheckAddUpdateBindings, queue.Name);
             foreach (var binding in queue.Bindings)
             {
                 var existingBinding = existingQueue.Bindings.FirstOrDefault(b => b.Exchange.Equals(binding.Exchange, StringComparison.InvariantCulture) &&
@@ -181,7 +181,7 @@ namespace RabbitMetaQueue.Domain
 
         private void CreateBinding(Queue queue, Binding binding)
         {
-            logger.Information(Strings.LogCreateBinding, new { exchange = binding.Exchange, queue = queue.Name, routingKey = binding.RoutingKey });
+            logger.Information(Strings.LogCreateBinding, queue.Name, binding.Exchange, binding.RoutingKey);
 
             topologyWriter.CreateBinding(queue, binding);
         }
@@ -189,28 +189,26 @@ namespace RabbitMetaQueue.Domain
 
         private void UpdateBinding(Queue queue, Binding binding, Binding existingBinding)
         {
-            var logInfo = new { exchange = binding.Exchange, queue = queue.Name, routingKey = binding.RoutingKey };
-
             if (volatileExchanges.Contains(binding.Exchange, StringComparer.InvariantCulture))
             {
-                logger.Information(Strings.LogBindRecreatedExchange, logInfo);
+                logger.Information(Strings.LogBindRecreatedExchange, binding.Exchange, queue.Name, binding.RoutingKey);
                 topologyWriter.CreateBinding(queue, binding);
                 return;
             }
 
             if (SameBinding(binding, existingBinding))
             {
-                logger.Debug(Strings.LogBindingUnchanged, logInfo);
+                logger.Debug(Strings.LogBindingUnchanged, queue.Name, binding.Exchange, binding.RoutingKey);
                 return;
             }
 
             if (!AllowRecreate)
             {
-                logger.Debug(Strings.LogBindingNoRecreate, logInfo);
+                logger.Debug(Strings.LogBindingNoRecreate, queue.Name, binding.Exchange, binding.RoutingKey);
                 return;
             }
 
-            logger.Information(Strings.LogBindingRecreate, logInfo);
+            logger.Information(Strings.LogBindingRecreate, queue.Name, binding.Exchange, binding.RoutingKey);
 
             topologyWriter.DeleteBinding(queue, existingBinding);
             CreateBinding(queue, binding);
@@ -219,7 +217,7 @@ namespace RabbitMetaQueue.Domain
 
         private void DeleteBinding(Queue queue, Binding binding)
         {
-            logger.Information(Strings.LogDeleteBinding, new { exchange = binding.Exchange, queue = queue.Name, routingKey = binding.RoutingKey });
+            logger.Information(Strings.LogDeleteBinding, queue.Name, binding.Exchange, binding.RoutingKey);
             topologyWriter.DeleteBinding(queue, binding);
         }
 

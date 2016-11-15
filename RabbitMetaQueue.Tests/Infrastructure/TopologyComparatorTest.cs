@@ -3,10 +3,10 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RabbitMetaQueue.Domain;
-using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
 using RabbitMetaQueue.Tests.Mock;
 using Serilog;
+using Serilog.Core;
 
 namespace RabbitMetaQueue.Tests.Infrastructure
 {
@@ -31,7 +31,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "ce:e1:Topic:True" }
+                "ce:e1:Topic:True"
             });
         }
 
@@ -43,7 +43,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "cq:q1:True" }
+                "cq:q1:True"
             });            
         }
 
@@ -58,9 +58,9 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "ce:e1:Topic:True" },
-                { "cq:q1:True" },
-                { "cb:q1:e1:mock.key" }
+                "ce:e1:Topic:True",
+                "cq:q1:True",
+                "cb:q1:e1:mock.key"
             });         
         }
 
@@ -78,7 +78,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "db:q1:e1:mock.key" }
+                "db:q1:e1:mock.key"
             });
         }
 
@@ -103,7 +103,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "de:e1" }
+                "de:e1"
             });
         }
 
@@ -115,11 +115,59 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
             TestCompare(new List<string>
             {
-                { "dq:q1" }
+                "dq:q1"
             });
         }
 
-        private void TestCompare(List<string> expectedActions)
+
+        [Test]
+        public void TestFilteredNoAction()
+        {
+            existingTopology.AddExchange1("ns1.");
+            existingTopology.AddQueue1("ns1.");
+
+            existingTopology.AddExchange1("ns2.");
+            definedTopology.AddExchange1("ns2.");
+
+            existingTopology.AddQueue1("ns2.");
+            definedTopology.AddQueue1("ns2.");
+
+            TestCompare(new List<string>(), "ns2.");
+        }
+
+
+        [Test]
+        public void TestFilteredAddExchangeAndQueue()
+        {
+            definedTopology.AddExchange1("ns1.");
+            definedTopology.AddQueue1("ns1.");
+
+            existingTopology.AddExchange1("ns2.");
+            existingTopology.AddQueue1("ns2.");
+
+            TestCompare(new List<string>
+            {
+                "ce:ns1.e1:Topic:True",
+                "cq:ns1.q1:True"
+            }, "ns1.");
+        }
+
+
+        [Test]
+        public void TestVerifyNamespaces()
+        {
+            definedTopology.AddExchange1("ns1.");
+            definedTopology.AddQueue1("ns1.");
+
+            Assert.True(definedTopology.VerifyNamespaces(new LoggerConfiguration().CreateLogger(), "ns1."));
+
+            definedTopology.AddExchange1("ns2.");
+
+            Assert.False(definedTopology.VerifyNamespaces(new LoggerConfiguration().CreateLogger(), "ns1."));
+        }
+
+
+        private void TestCompare(IReadOnlyCollection<string> expectedActions, string prefix = null)
         {
             var writer = new MockTopologyWriter();
             var comparator = new TopologyComparator(new LoggerConfiguration().CreateLogger(), writer)
@@ -129,7 +177,9 @@ namespace RabbitMetaQueue.Tests.Infrastructure
                 AllowUnbind = true
             };
 
-            comparator.Compare(existingTopology, definedTopology);
+            comparator.Compare(
+                existingTopology.FilterByNamespace(prefix),
+                definedTopology);
 
             var hasUnexpectedActions = false;
             var results = new StringBuilder();
@@ -160,7 +210,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
     }
 
 
-    class MockTopologyWriter : ITopologyWriter
+    internal class MockTopologyWriter : ITopologyWriter
     {
         public List<string> Actions { get; } 
 

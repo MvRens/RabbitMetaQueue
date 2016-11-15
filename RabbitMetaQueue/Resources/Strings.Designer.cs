@@ -61,7 +61,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Binding from queue {queue} to exchange {exchange} with routing key {routingKey} has changed but recreating is not enabled, skipping.
+        ///   Looks up a localized string similar to Binding from queue {Queue} to exchange {Exchange} with routing key {RoutingKey} has changed but recreating is not enabled, skipping.
         /// </summary>
         internal static string LogBindingNoRecreate {
             get {
@@ -70,7 +70,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recreating binding from queue {queue} to exchange {exchange} with routing key {routingKey}.
+        ///   Looks up a localized string similar to Recreating binding from queue {Queue} to exchange {Exchange} with routing key {RoutingKey}.
         /// </summary>
         internal static string LogBindingRecreate {
             get {
@@ -79,7 +79,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Binding from queue {queue} to exchange {exchange} with routing key {routingKey} has not been changed, skipping.
+        ///   Looks up a localized string similar to Binding from queue {Queue} to exchange {Exchange} with routing key {RoutingKey} has not been changed, skipping.
         /// </summary>
         internal static string LogBindingUnchanged {
             get {
@@ -88,7 +88,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exchange {exchange} was recreated, creating binding for queue {queue} with routing key {routingKey}.
+        ///   Looks up a localized string similar to Exchange {Exchange} was recreated, creating binding for queue {Queue} with routing key {RoutingKey}.
         /// </summary>
         internal static string LogBindRecreatedExchange {
             get {
@@ -97,7 +97,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking queue {queue} for added or updated bindings.
+        ///   Looks up a localized string similar to Checking queue {Queue} for added or updated bindings.
         /// </summary>
         internal static string LogCheckAddUpdateBindings {
             get {
@@ -178,7 +178,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating binding for queue {queue} to exchange {exchange} with routing key {routingKey}.
+        ///   Looks up a localized string similar to Creating binding for queue {Queue} to exchange {Exchange} with routing key {RoutingKey}.
         /// </summary>
         internal static string LogCreateBinding {
             get {
@@ -187,7 +187,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating exchange {exchange} of type {type}.
+        ///   Looks up a localized string similar to Creating exchange {Exchange} of type {Type}.
         /// </summary>
         internal static string LogCreateExchange {
             get {
@@ -205,7 +205,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting binding from queue {queue} to exchange {exchange} with routing key {routingKey}.
+        ///   Looks up a localized string similar to Deleting binding from queue {Queue} to exchange {Exchange} with routing key {RoutingKey}.
         /// </summary>
         internal static string LogDeleteBinding {
             get {
@@ -214,7 +214,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting exchange {exchange}.
+        ///   Looks up a localized string similar to Deleting exchange {Exchange}.
         /// </summary>
         internal static string LogDeleteExchange {
             get {
@@ -223,7 +223,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting queue {queue}.
+        ///   Looks up a localized string similar to Deleting queue {Queue}.
         /// </summary>
         internal static string LogDeleteQueue {
             get {
@@ -232,16 +232,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: .
-        /// </summary>
-        internal static string LogError {
-            get {
-                return ResourceManager.GetString("LogError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange {exchange} has changed but recreating is not enabled, skipping.
+        ///   Looks up a localized string similar to Exchange {Exchange} has changed but recreating is not enabled, skipping.
         /// </summary>
         internal static string LogExchangeNoRecreate {
             get {
@@ -250,7 +241,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recreating exchange {exchange} (type: {type}).
+        ///   Looks up a localized string similar to Recreating exchange {Exchange} (type: {Type}).
         /// </summary>
         internal static string LogExchangeRecreate {
             get {
@@ -259,7 +250,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exchange {exchange} has not been changed, skipping.
+        ///   Looks up a localized string similar to Exchange {Exchange} has not been changed, skipping.
         /// </summary>
         internal static string LogExchangeUnchanged {
             get {
@@ -268,25 +259,34 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fatal: .
+        ///   Looks up a localized string similar to Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges}.
         /// </summary>
-        internal static string LogFatal {
+        internal static string LogInvalidNamespacesExchange {
             get {
-                return ResourceManager.GetString("LogFatal", resourceCulture);
+                return ResourceManager.GetString("LogInvalidNamespacesExchange", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &gt; .
+        ///   Looks up a localized string similar to Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges} and queues {@Queues}.
         /// </summary>
-        internal static string LogPrefix {
+        internal static string LogInvalidNamespacesExchangeQueue {
             get {
-                return ResourceManager.GetString("LogPrefix", resourceCulture);
+                return ResourceManager.GetString("LogInvalidNamespacesExchangeQueue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue {queue} has changed but recreating is not enabled, checking for updated bindings.
+        ///   Looks up a localized string similar to Name must begin with namespace prefix {Prefix} for queues {@Queues}.
+        /// </summary>
+        internal static string LogInvalidNamespacesQueue {
+            get {
+                return ResourceManager.GetString("LogInvalidNamespacesQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue {Queue} has changed but recreating is not enabled, checking for updated bindings.
         /// </summary>
         internal static string LogQueueNoRecreate {
             get {
@@ -295,7 +295,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recreating queue {queue}.
+        ///   Looks up a localized string similar to Recreating queue {Queue}.
         /// </summary>
         internal static string LogQueueRecreate {
             get {
@@ -304,20 +304,11 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Queue {queue} has not been changed, checking for updated bindings.
+        ///   Looks up a localized string similar to Queue {Queue} has not been changed, checking for updated bindings.
         /// </summary>
         internal static string LogQueueUnchanged {
             get {
                 return ResourceManager.GetString("LogQueueUnchanged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning: .
-        /// </summary>
-        internal static string LogWarning {
-            get {
-                return ResourceManager.GetString("LogWarning", resourceCulture);
             }
         }
         
@@ -583,7 +574,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connecting to RabbitMQ server [{host}{virtualHost}].
+        ///   Looks up a localized string similar to Connecting to RabbitMQ server [{0}{1}].
         /// </summary>
         internal static string StatusConnectingRabbitMQ {
             get {
@@ -601,7 +592,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: {error}.
+        ///   Looks up a localized string similar to Error: {0}.
         /// </summary>
         internal static string StatusError {
             get {
@@ -646,7 +637,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Circular reference detected for template {template}.
+        ///   Looks up a localized string similar to Circular reference detected for template {Template}.
         /// </summary>
         internal static string XmlTemplateCircularReference {
             get {
@@ -655,7 +646,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Template {template} not found.
+        ///   Looks up a localized string similar to Template {Template} not found.
         /// </summary>
         internal static string XmlTemplateNotFound {
             get {
@@ -664,7 +655,7 @@ namespace RabbitMetaQueue.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Template {template} is not of the expected type.
+        ///   Looks up a localized string similar to Template {Template} is not of the expected type {Type}.
         /// </summary>
         internal static string XmlTemplateUnexpectedType {
             get {

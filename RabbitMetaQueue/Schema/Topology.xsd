@@ -3,11 +3,12 @@
 	<xs:element name="Topology">
 		<xs:complexType>
 			<xs:all>
+        <xs:element name="Settings" type="rmq:Settings" minOccurs="0"/>
 				<xs:element name="Templates" type="rmq:Templates" minOccurs="0"/>
 				<xs:element name="Exchanges" type="rmq:Exchanges" minOccurs="0"/>
 				<xs:element name="Queues" type="rmq:Queues" minOccurs="0"/>
 			</xs:all>
-		</xs:complexType>
+    </xs:complexType>
 	</xs:element>
 	<xs:complexType name="Exchanges">
 		<xs:sequence>
@@ -72,7 +73,12 @@
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="type" type="rmq:TemplateType" use="required"/>
 	</xs:complexType>
-	<xs:simpleType name="ExchangeType">
+  <xs:complexType name="Settings">
+    <xs:all>
+      <xs:element name="Namespace" type="xs:string" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="ExchangeType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Fanout"/>
 			<xs:enumeration value="Direct"/>

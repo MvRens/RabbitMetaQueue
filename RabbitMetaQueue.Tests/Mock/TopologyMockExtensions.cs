@@ -4,11 +4,11 @@ namespace RabbitMetaQueue.Tests.Mock
 {
     public static class TopologyMockExtensions
     {
-        public static Exchange AddExchange1(this Topology topology)
+        public static Exchange AddExchange1(this Topology topology, string prefix = "")
         {
             var exchange = new Exchange
             {
-                Name = "e1",
+                Name = prefix + "e1",
                 ExchangeType = ExchangeType.Topic
             };
 
@@ -16,12 +16,12 @@ namespace RabbitMetaQueue.Tests.Mock
             return exchange;
         }
 
-
-        public static Queue AddQueue1(this Topology topology)
+    
+        public static Queue AddQueue1(this Topology topology, string prefix = "")
         {
             var queue = new Queue
             {
-                Name = "q1"
+                Name = prefix + "q1"
             };
 
             topology.Queues.Add(queue);
@@ -29,11 +29,11 @@ namespace RabbitMetaQueue.Tests.Mock
         }
 
 
-        public static Binding BindToExchange1(this Queue queue, string routingKey)
+        public static Binding BindToExchange1(this Queue queue, string routingKey, string prefix = "")
         {
             var binding = new Binding()
             {
-                Exchange = "e1",
+                Exchange = prefix + "e1",
                 RoutingKey = routingKey
             };
 

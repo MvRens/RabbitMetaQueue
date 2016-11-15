@@ -35,6 +35,9 @@ namespace RabbitMetaQueue.Infrastructure
             definition = (Topology)serializer.Deserialize(stream);
             var model = new Model.Topology();
 
+            if (definition.Settings != null)
+                model.Meta.NamespacePrefix = definition.Settings.Namespace;
+
             if (definition.Exchanges != null)
                 MapExchanges(definition.Exchanges, model.Exchanges);
 
