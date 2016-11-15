@@ -161,7 +161,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
 
     class MockTopologyWriter : ITopologyWriter
     {
-        public List<string> Actions { get; private set; } 
+        public List<string> Actions { get; } 
 
 
         public MockTopologyWriter()

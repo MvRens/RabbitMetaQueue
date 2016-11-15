@@ -36,12 +36,12 @@ namespace RabbitMetaQueue.Infrastructure
 
         protected void LogFormat(LogLevel level, string format, params object[] args)
         {
-            Log(level, String.Format(format, args), null);
+            Log(level, string.Format(format, args), null);
         }
 
         protected void LogFormat(LogLevel level, IFormatProvider provider, string format, params object[] args)
         {
-            Log(level, String.Format(provider, format, args), null);
+            Log(level, string.Format(provider, format, args), null);
         }
 
 

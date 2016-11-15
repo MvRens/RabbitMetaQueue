@@ -16,7 +16,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private Schema.Topology definition = null;
+        private Topology definition;
 
 
         public Model.Topology Parse(string filename)
@@ -30,9 +30,9 @@ namespace RabbitMetaQueue.Infrastructure
 
         public Model.Topology Parse(Stream stream)
         {
-            var serializer = new XmlSerializer(typeof(Schema.Topology));
+            var serializer = new XmlSerializer(typeof(Topology));
             
-            definition = (Schema.Topology)serializer.Deserialize(stream);
+            definition = (Topology)serializer.Deserialize(stream);
             var model = new Model.Topology();
 
             if (definition.Exchanges != null)
@@ -45,14 +45,14 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private void MapExchanges(IEnumerable<Schema.Exchange> exchanges, List<Model.Exchange> model)
+        private void MapExchanges(IEnumerable<Exchange> exchanges, List<Model.Exchange> model)
         {
-            var exchangeTypeMap = new Dictionary<Schema.ExchangeType, Model.ExchangeType>
+            var exchangeTypeMap = new Dictionary<ExchangeType, Model.ExchangeType>
             {
-                { Schema.ExchangeType.Fanout, Model.ExchangeType.Fanout },
-                { Schema.ExchangeType.Direct, Model.ExchangeType.Direct },
-                { Schema.ExchangeType.Topic, Model.ExchangeType.Topic },
-                { Schema.ExchangeType.Headers, Model.ExchangeType.Headers },
+                { ExchangeType.Fanout, Model.ExchangeType.Fanout },
+                { ExchangeType.Direct, Model.ExchangeType.Direct },
+                { ExchangeType.Topic, Model.ExchangeType.Topic },
+                { ExchangeType.Headers, Model.ExchangeType.Headers },
             };
 
 
@@ -73,7 +73,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private void MapQueues(IEnumerable<Schema.Queue> queues, List<Model.Queue> model)
+        private void MapQueues(IEnumerable<Queue> queues, List<Model.Queue> model)
         {
             foreach (var sourceQueue in queues)
             {
@@ -94,7 +94,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
-        private void MapBindings(IEnumerable<Schema.Binding> bindings, List<Model.Binding> model)
+        private void MapBindings(IEnumerable<Binding> bindings, List<Model.Binding> model)
         {
             foreach (var sourceBinding in bindings)
             {
@@ -120,10 +120,10 @@ namespace RabbitMetaQueue.Infrastructure
 
         private void MapArguments(Arguments arguments, Model.Arguments model, HashSet<string> stackTrace)
         {
-            if (!String.IsNullOrEmpty(arguments.template))
+            if (!string.IsNullOrEmpty(arguments.template))
             {
                 if (stackTrace.Contains(arguments.template, StringComparer.InvariantCulture))
-                    throw new TemplateException(String.Format(Strings.XmlTemplateCircularReference, arguments.template));
+                    throw new TemplateException(string.Format(Strings.XmlTemplateCircularReference, arguments.template));
                 
                 var template = GetTemplate(arguments.template, TemplateType.Arguments);
 
@@ -139,6 +139,7 @@ namespace RabbitMetaQueue.Infrastructure
         }
 
 
+        // ReSharper disable once UnusedParameter.Local
         private Template GetTemplate(string name, TemplateType type)
         {
             if (definition.Templates == null)
@@ -146,10 +147,10 @@ namespace RabbitMetaQueue.Infrastructure
 
             var template = definition.Templates.FirstOrDefault(t => t.name.Equals(name, StringComparison.InvariantCulture));
             if (template == null)
-                throw new TemplateException(String.Format(Strings.XmlTemplateNotFound, name));
+                throw new TemplateException(string.Format(Strings.XmlTemplateNotFound, name));
 
             if (template.type != type)
-                throw new TemplateException(String.Format(Strings.XmlTemplateUnexpectedType, name));
+                throw new TemplateException(string.Format(Strings.XmlTemplateUnexpectedType, name));
 
             return template;
         }

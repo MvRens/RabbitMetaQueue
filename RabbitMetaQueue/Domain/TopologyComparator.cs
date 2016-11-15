@@ -264,7 +264,7 @@ namespace RabbitMetaQueue.Domain
     {
         public bool Equals(Exchange x, Exchange y)
         {
-            return (String.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
+            return (string.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
         }
 
         public int GetHashCode(Exchange obj)
@@ -278,7 +278,7 @@ namespace RabbitMetaQueue.Domain
     {
         public bool Equals(Queue x, Queue y)
         {
-            return (String.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
+            return (string.Compare(x.Name, y.Name, StringComparison.Ordinal) == 0);
         }
 
         public int GetHashCode(Queue obj)
@@ -292,8 +292,8 @@ namespace RabbitMetaQueue.Domain
     {
         public bool Equals(Binding x, Binding y)
         {
-            return (String.Compare(x.Exchange, y.Exchange, StringComparison.Ordinal) == 0) &&
-                   (String.Compare(x.RoutingKey, y.RoutingKey, StringComparison.Ordinal) == 0);
+            return (string.Compare(x.Exchange, y.Exchange, StringComparison.Ordinal) == 0) &&
+                   (string.Compare(x.RoutingKey, y.RoutingKey, StringComparison.Ordinal) == 0);
         }
 
         public int GetHashCode(Binding obj)

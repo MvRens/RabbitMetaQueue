@@ -20,7 +20,7 @@ namespace RabbitMetaQueue
             public bool Mirror { get; set; }
             public bool Verbose { get; set; }
 
-            public ConnectionParams ConnectionParams { get; private set; }
+            public ConnectionParams ConnectionParams { get; }
 
             public Options()
             {
@@ -59,7 +59,7 @@ namespace RabbitMetaQueue
                     Console.WriteLine(Strings.StatusParsingDefinition);
                     var definedTopology = new XmlTopologyReader().Parse(options.TopologyFilename);
 
-                    Console.WriteLine(String.Format(Strings.StatusConnectingRabbitMQ, options.ConnectionParams.Host, options.ConnectionParams.VirtualHost));
+                    Console.WriteLine(Strings.StatusConnectingRabbitMQ, options.ConnectionParams.Host, options.ConnectionParams.VirtualHost);
                     var client = Connect(options.ConnectionParams);
                     var virtualHost = client.GetVhost(options.ConnectionParams.VirtualHost);
 
@@ -86,7 +86,7 @@ namespace RabbitMetaQueue
                 catch(Exception e)
                 {
                     Console.WriteLine();
-                    Console.WriteLine(String.Format(Strings.StatusError, e.Message));
+                    Console.WriteLine(Strings.StatusError, e.Message);
                     return 1;
                 }            
             }
@@ -104,7 +104,7 @@ namespace RabbitMetaQueue
 
         private static IManagementClient Connect(ConnectionParams connectionParams)
         {
-            return new ManagementClient(String.Format("http://{0}", connectionParams.Host),
+            return new ManagementClient($"http://{connectionParams.Host}",
                                         connectionParams.Username,
                                         connectionParams.Password);
         }
@@ -154,7 +154,7 @@ namespace RabbitMetaQueue
             {
                 optionSet.Parse(args);
 
-                if (String.IsNullOrEmpty(filename))
+                if (string.IsNullOrEmpty(filename))
                     throw new OptionException(Strings.OptionInputRequired, Strings.OptionKeyInput);
 
                 if (!File.Exists(filename))

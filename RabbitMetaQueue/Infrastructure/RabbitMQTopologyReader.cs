@@ -81,22 +81,22 @@ namespace RabbitMetaQueue.Infrastructure
 
         private static bool IsSystemExchange(string name)
         {
-            return (String.IsNullOrEmpty(name) ||
+            return (string.IsNullOrEmpty(name) ||
                     name.StartsWith("amq.", StringComparison.InvariantCulture));
         }
 
 
         private static bool IsSystemQueue(EasyNetQ.Management.Client.Model.Queue queue)
         {
-            return (queue.AutoDelete || 
-                    String.IsNullOrEmpty(queue.Name) ||
+            return (queue.AutoDelete ||
+                    string.IsNullOrEmpty(queue.Name) ||
                     queue.Name.StartsWith("amq."));
         }
 
 
         private static bool IsSystemBinding(EasyNetQ.Management.Client.Model.Binding binding)
         {
-            return (String.IsNullOrEmpty(binding.Source));
+            return (string.IsNullOrEmpty(binding.Source));
         }
     }
 }
