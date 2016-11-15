@@ -6,6 +6,7 @@ using RabbitMetaQueue.Domain;
 using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
 using RabbitMetaQueue.Tests.Mock;
+using Serilog;
 
 namespace RabbitMetaQueue.Tests.Infrastructure
 {
@@ -121,7 +122,7 @@ namespace RabbitMetaQueue.Tests.Infrastructure
         private void TestCompare(List<string> expectedActions)
         {
             var writer = new MockTopologyWriter();
-            var comparator = new TopologyComparator(new NullLog(), writer)
+            var comparator = new TopologyComparator(new LoggerConfiguration().CreateLogger(), writer)
             {
                 AllowDelete = true,
                 AllowRecreate = true,

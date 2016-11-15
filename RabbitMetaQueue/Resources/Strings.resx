@@ -145,14 +145,13 @@
     <value>Comparing topology</value>
   </data>
   <data name="StatusConnectingRabbitMQ" xml:space="preserve">
-    <value>Connecting to RabbitMQ server [{0}{1}]</value>
-    <comment>0 = Host, 1 = VirtualHost</comment>
+    <value>Connecting to RabbitMQ server [{host}{virtualHost}]</value>
   </data>
   <data name="StatusDone" xml:space="preserve">
     <value>Done!</value>
   </data>
   <data name="StatusError" xml:space="preserve">
-    <value>Error: {0}</value>
+    <value>Error: {error}</value>
   </data>
   <data name="StatusParsingDefinition" xml:space="preserve">
     <value>Parsing topology definition</value>
@@ -236,24 +235,19 @@
     <value>v|virtualhost=</value>
   </data>
   <data name="LogBindingNoRecreate" xml:space="preserve">
-    <value>Binding from queue {0} to exchange {1} with routing key {2} has changed but recreating is not enabled, skipping</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Binding from queue {queue} to exchange {exchange} with routing key {routingKey} has changed but recreating is not enabled, skipping</value>
   </data>
   <data name="LogBindingRecreate" xml:space="preserve">
-    <value>Recreating binding from queue {0} to exchange {1} with routing key {2}</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Recreating binding from queue {queue} to exchange {exchange} with routing key {routingKey}</value>
   </data>
   <data name="LogBindingUnchanged" xml:space="preserve">
-    <value>Binding from queue {0} to exchange {1} with routing key {2} has not been changed, skipping</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Binding from queue {queue} to exchange {exchange} with routing key {routingKey} has not been changed, skipping</value>
   </data>
   <data name="LogBindRecreatedExchange" xml:space="preserve">
-    <value>Exchange {1} was recreated, creating binding for queue {0} with routing key {2}</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Exchange {exchange} was recreated, creating binding for queue {queue} with routing key {routingKey}</value>
   </data>
   <data name="LogCheckAddUpdateBindings" xml:space="preserve">
-    <value>Checking queue {0} for added or updated bindings</value>
-    <comment>0 = Name</comment>
+    <value>Checking queue {queue} for added or updated bindings</value>
   </data>
   <data name="LogCheckAddUpdateExchanges" xml:space="preserve">
     <value>Checking for added or updated exchanges</value>
@@ -280,66 +274,51 @@
     <value>Deleting is not enabled, skipping check for removed queues</value>
   </data>
   <data name="LogCreateBinding" xml:space="preserve">
-    <value>Creating binding for queue {0} to exchange {1} with routing key {2}</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Creating binding for queue {queue} to exchange {exchange} with routing key {routingKey}</value>
   </data>
   <data name="LogCreateExchange" xml:space="preserve">
-    <value>Creating exchange {0} of type {1}</value>
-    <comment>0 = Name, 1 = Type</comment>
+    <value>Creating exchange {exchange} of type {type}</value>
   </data>
   <data name="LogCreateQueue" xml:space="preserve">
-    <value>Creating queue {0}</value>
-    <comment>0 = Name</comment>
+    <value>Creating queue {queue}</value>
   </data>
   <data name="LogDeleteBinding" xml:space="preserve">
-    <value>Deleting binding from queue {0} to exchange {1} with routing key {2}</value>
-    <comment>0 = Queue, 1 = Exchange, 2 = Routing Key</comment>
+    <value>Deleting binding from queue {queue} to exchange {exchange} with routing key {routingKey}</value>
   </data>
   <data name="LogDeleteExchange" xml:space="preserve">
-    <value>Deleting exchange {0}</value>
-    <comment>0 = Name</comment>
+    <value>Deleting exchange {exchange}</value>
   </data>
   <data name="LogDeleteQueue" xml:space="preserve">
-    <value>Deleting queue {0}</value>
-    <comment>0 = Name</comment>
+    <value>Deleting queue {queue}</value>
   </data>
   <data name="LogExchangeNoRecreate" xml:space="preserve">
-    <value>Exchange {0} has changed but recreating is not enabled, skipping</value>
-    <comment>0 = Name</comment>
+    <value>Exchange {exchange} has changed but recreating is not enabled, skipping</value>
   </data>
   <data name="LogExchangeRecreate" xml:space="preserve">
-    <value>Recreating exchange {0} (type: {1})</value>
-    <comment>0 = Name, 1 = Type</comment>
+    <value>Recreating exchange {exchange} (type: {type})</value>
   </data>
   <data name="LogExchangeUnchanged" xml:space="preserve">
-    <value>Exchange {0} has not been changed, skipping</value>
-    <comment>0 = Name</comment>
+    <value>Exchange {exchange} has not been changed, skipping</value>
   </data>
   <data name="LogQueueNoRecreate" xml:space="preserve">
-    <value>Queue {0} has changed but recreating is not enabled, checking for updated bindings</value>
-    <comment>0 = Name</comment>
+    <value>Queue {queue} has changed but recreating is not enabled, checking for updated bindings</value>
   </data>
   <data name="LogQueueRecreate" xml:space="preserve">
-    <value>Recreating queue {0}</value>
-    <comment>0 = Name</comment>
+    <value>Recreating queue {queue}</value>
   </data>
   <data name="LogQueueUnchanged" xml:space="preserve">
-    <value>Queue {0} has not been changed, checking for updated bindings</value>
-    <comment>0 = Name</comment>
+    <value>Queue {queue} has not been changed, checking for updated bindings</value>
   </data>
   <data name="XmlNoTemplatesElement" xml:space="preserve">
     <value>No &lt;Templates&gt; element found</value>
   </data>
   <data name="XmlTemplateNotFound" xml:space="preserve">
-    <value>Template {0} not found</value>
-    <comment>0 = Name</comment>
+    <value>Template {template} not found</value>
   </data>
   <data name="XmlTemplateUnexpectedType" xml:space="preserve">
-    <value>Template {0} is not of the expected type</value>
-    <comment>0 = Name</comment>
+    <value>Template {template} is not of the expected type</value>
   </data>
   <data name="XmlTemplateCircularReference" xml:space="preserve">
-    <value>Circular reference detected for template {0}</value>
-    <comment>0 = Name</comment>
+    <value>Circular reference detected for template {template}</value>
   </data>
 </root>

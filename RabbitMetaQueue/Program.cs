@@ -8,6 +8,7 @@ using RabbitMetaQueue.Domain;
 using RabbitMetaQueue.Infrastructure;
 using RabbitMetaQueue.Model;
 using RabbitMetaQueue.Resources;
+using Serilog;
 
 namespace RabbitMetaQueue
 {
@@ -37,10 +38,9 @@ namespace RabbitMetaQueue
                 if (!ParseOptions(args, options))
                     return 1;
 
-                var log = new ConsoleLog
-                {
-                    IsDebugEnabled = options.Verbose
-                };
+                var logger = new LoggerConfiguration()
+                    .WriteTo.Console()
+                    .CreateLogger();
 
                 var optionTable = new TextTable();
                 optionTable.Add(Strings.OptionDryRun, options.DryRun ? Strings.OptionDryRunYes
@@ -69,7 +69,7 @@ namespace RabbitMetaQueue
                     var writer = (options.DryRun ? (ITopologyWriter)new NullTopologyWriter() 
                                                  : new RabbitMQTopologyWriter(client, virtualHost));
 
-                    var comparator = new TopologyComparator(log, writer)
+                    var comparator = new TopologyComparator(logger, writer)
                     {
                         AllowDelete = options.Mirror,
                         AllowRecreate = options.Mirror,
