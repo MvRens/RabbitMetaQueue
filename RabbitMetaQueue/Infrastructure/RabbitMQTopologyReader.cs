@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 using RabbitMetaQueue.Model;
@@ -21,7 +22,7 @@ namespace RabbitMetaQueue.Infrastructure
         {
             var topology = new Topology();
             
-            foreach (var exchange in client.GetExchanges())
+            foreach (var exchange in client.GetExchanges().Where(e => e.Vhost == virtualHost.Name))
             {
                 if (!IsSystemExchange(exchange.Name))
                 { 
@@ -37,7 +38,7 @@ namespace RabbitMetaQueue.Infrastructure
                 }
             }
 
-            foreach (var queue in client.GetQueues())
+            foreach (var queue in client.GetQueues().Where(q => q.Vhost == virtualHost.Name))
             {
                 if (!IsSystemQueue(queue))
                 { 
