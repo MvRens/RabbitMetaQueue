@@ -33,6 +33,7 @@ namespace RabbitMetaQueue.Domain
         {
             volatileExchanges.Clear();
 
+            // Explicit exchanges
             logger.Debug(Strings.LogCheckAddUpdateExchanges);
             foreach (var exchange in definedTopology.Exchanges)
             {
@@ -52,6 +53,24 @@ namespace RabbitMetaQueue.Domain
             else
                 logger.Debug(Strings.LogCheckRemovedExchangesSkipped);
 
+
+            // Exchanges referenced in bindings must be present as well
+            foreach (var referencedExchange in definedTopology.Queues.SelectMany(q => q.Bindings).GroupBy(b => b.Exchange))
+            {
+                if (!existingTopology.Exchanges.Any(e => e.Name.Equals(referencedExchange.Key, StringComparison.InvariantCulture)))
+                {
+                    // Assume "topic" - may make this configurable at some point
+                    CreateExchange(new Exchange
+                    {
+                        Name = referencedExchange.Key,
+                        ExchangeType = ExchangeType.Topic,
+                        Durable = true
+                    });
+                }
+            }
+
+
+            // Queues and bindings
             logger.Debug(Strings.LogCheckAddUpdateQueues);
             foreach (var queue in definedTopology.Queues)
             {
