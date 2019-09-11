@@ -187,14 +187,15 @@ namespace RabbitMetaQueue.Domain
                     CreateBinding(queue, binding);
             }
 
-            if (AllowDelete)
-            {
+            // Fix: if a queue is managed by RabbitMetaQueue, always allow the bindings to be mirrored 
+            //if (AllowDelete)
+            //{
                 logger.Debug(Strings.LogCheckRemovedBindings);
                 foreach (var binding in existingQueue.Bindings.Except(queue.Bindings, new BindingComparer()))
                     DeleteBinding(existingQueue, binding);
-            }
-            else
-                logger.Debug(Strings.LogCheckRemovedBindingsSkipped);
+            //}
+            //else
+            //    logger.Debug(Strings.LogCheckRemovedBindingsSkipped);
         }
 
 

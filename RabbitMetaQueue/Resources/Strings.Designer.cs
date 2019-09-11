@@ -19,7 +19,7 @@ namespace RabbitMetaQueue.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -255,24 +255,6 @@ namespace RabbitMetaQueue.Resources {
         internal static string LogExchangeUnchanged {
             get {
                 return ResourceManager.GetString("LogExchangeUnchanged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges}.
-        /// </summary>
-        internal static string LogInvalidNamespacesExchange {
-            get {
-                return ResourceManager.GetString("LogInvalidNamespacesExchange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges} and queues {@Queues}.
-        /// </summary>
-        internal static string LogInvalidNamespacesExchangeQueue {
-            get {
-                return ResourceManager.GetString("LogInvalidNamespacesExchangeQueue", resourceCulture);
             }
         }
         

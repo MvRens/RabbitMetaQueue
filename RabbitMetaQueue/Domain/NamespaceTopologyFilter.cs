@@ -26,29 +26,12 @@ namespace RabbitMetaQueue.Domain
             if (string.IsNullOrEmpty(prefix))
                 return true;
 
-            var exchanges = topology.Exchanges.Where(e => !Matches(e.Name, prefix)).ToList();
             var queues = topology.Queues.Where(q => !Matches(q.Name, prefix)).ToList();
+            if (queues.Count <= 0) 
+                return true;
 
-            if (exchanges.Count > 0 && queues.Count > 0)
-            {
-                logger.Error(Strings.LogInvalidNamespacesExchangeQueue, prefix, exchanges.Select(e => e.Name).ToArray(), queues.Select(q => q.Name).ToArray());
-                return false;
-            }
-
-            if (exchanges.Count > 0)
-            {
-                logger.Error(Strings.LogInvalidNamespacesExchange, prefix, exchanges.Select(e => e.Name).ToArray());
-                return false;
-            }
-
-            // ReSharper disable once InvertIf - hurts readability in this case in my opinion
-            if (queues.Count > 0)
-            {
-                logger.Error(Strings.LogInvalidNamespacesQueue, prefix, queues.Select(q => q.Name).ToArray() );
-                return false;
-            }
-
-            return true;
+            logger.Error(Strings.LogInvalidNamespacesQueue, prefix, queues.Select(q => q.Name).ToArray() );
+            return false;
         }
 
 

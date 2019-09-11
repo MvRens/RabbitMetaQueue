@@ -309,12 +309,6 @@
   <data name="XmlTemplateCircularReference" xml:space="preserve">
     <value>Circular reference detected for template {Template}</value>
   </data>
-  <data name="LogInvalidNamespacesExchange" xml:space="preserve">
-    <value>Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges}</value>
-  </data>
-  <data name="LogInvalidNamespacesExchangeQueue" xml:space="preserve">
-    <value>Name must begin with namespace prefix {Prefix} for exchanges {@Exchanges} and queues {@Queues}</value>
-  </data>
   <data name="LogInvalidNamespacesQueue" xml:space="preserve">
     <value>Name must begin with namespace prefix {Prefix} for queues {@Queues}</value>
   </data>
